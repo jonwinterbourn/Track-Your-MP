@@ -2,12 +2,14 @@ body
 {
     margin-left: 4px;
     margin-right: 4px;
+    font-size:0.9em;
 }
 
 .ui-footer
 {
     text-align: center;    
 }
+
 
 .err
 {
@@ -18,3 +20,67 @@ body
 {
     text-align:center;
 }
+
+h1#nomp {
+    display:none;
+}
+
+
+.searchZone {
+    margin:0px;
+    margin-bottom:1em;
+    border:1px solid #CCC;
+    /*padding: 1em 0.5em;*/
+    /*padding-top:1em;*/
+    
+}
+
+.searchZone h2 {
+    background-color: #cfcfcf;
+    padding:0.5em;
+    margin:0 0 0.5em 0;
+    font-size:1em;
+}
+
+.searchZone div
+/*
+.searchZone label,
+.searchZone input,
+.searchZone button
+*/
+ {
+    
+    font-size: 1em;
+    margin: 0.5em;    
+}
+
+.searchZone label,
+.searchZone input,
+.searchZone button{
+    font-size: 1em;    
+    
+}
+
+
+div#myLocation {
+    display:inline; 
+    font-size:0.9em;
+    margin:0px;
+}
+
+div#foundMP {
+
+    margin:0px;
+    margin-bottom:1em;
+    border:1px dashed #CCC;
+    padding: 0.5em;
+    
+}
+
+span.noMPFound {
+    display: none;
+    }
+}
+
+#navgroup {text-align:center;}
+#navgroup div {display:inline-block;}
