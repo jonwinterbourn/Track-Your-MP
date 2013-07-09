@@ -102,6 +102,35 @@ function check4MP() {
     return false;
 }
 
+//MP Work //
+
+function findMPFromPostCode() {
+    var inputText = document.getElementById('postCode');
+
+//    sayInputElem.style.display = 'none';
+//    sayTextElem.innerHTML = '';
+//    sayTextElem.style.display = 'block';
+    //sayTextElem.innerHTML = "Test me 2";
+    
+  //need a try in here...
+    
+    $.getJSON('http://www.theyworkforyou.com/api/getMP?key=GAbXxUAuN3ggAwJjTnEEje9K&postcode=' + inputText.value,function(result){
+        
+        //$.each(result, function(i, field){
+            //$('#yourMP').append(field + ' ');
+        $('#foundMP').html("<span class='mp' id='" + result.member_id + "'>You have selected:<br/> " + result.full_name + ", " + result.party + " MP for the " + result.constituency + " constituency. </span> ");
+        
+        /*
+        $('#helloWorldText').append("<div class='fullname'>Constituency: " + result.constituency + "</div> ");
+        $('#helloWorldText').append("<div class='fullname'>Party: " + result.party + "</div> ");
+        $('#helloWorldText').append("<div class='fullname'>Image: http://www.theyworkforyou.com" + result.img + "</div> ");
+        $('#helloWorldText').append("<div class='fullname'>URL: http://www.theyworkforyou.com" + result.url + "</div> ");
+        */
+        //});
+     });
+}
+
+
   
 //=======================Say Hello (Page 1) Operations=======================//
 function sayHello() {
