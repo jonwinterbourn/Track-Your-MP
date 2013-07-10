@@ -7,6 +7,10 @@ function onDeviceReady() {
     getLocation();
     navigator.splashscreen.hide();
 
+    //disable unused links til needed
+    $('a#mpActivityMenuLink').addClass('ui-disabled');
+    $('a#aboutAppMenuLink').addClass('ui-disabled');
+    
     //add local storage
     localStorageApp = new localStorageApp();
 	localStorageApp.run();
@@ -15,8 +19,10 @@ function onDeviceReady() {
     if (!mpSet) {
         noMP();        
     }
-    
-    
+    else
+    {
+        okMP();
+    }
     
 }
 
@@ -25,6 +31,21 @@ function noMP() {
         $("h1#mpName").hide();
         $("div.mpDetails").hide();
         $("li#mpActivity").hide();
+}
+
+function okMP() {
+    $("h1#nomp").hide();
+        $("h1#mpName").show();
+        $("div.mpDetails").show();
+        $("li#mpActivity").show();
+    //set name & details
+    $("h1#mpName").text(localStorage.getItem("mpName"));
+    $("div#mpConstituency").append(localStorage.getItem("mpConstituency"));
+    $("div#mpParty").append(localStorage.getItem("mpParty"));
+    
+    //set activity
+    
+ 
 }
 
 function getLocation() {
@@ -44,31 +65,37 @@ localStorageApp.prototype = {
 
     run:function() {
 		var that = this;
-		/*
-        document.getElementById("insertVariable").addEventListener("click", function() {
+		
+        document.getElementById("saveMP").addEventListener("click", function() {
 			that._insertVariable.apply(that, arguments);
 		});
-		document.getElementById("searchVariable").addEventListener("click", function() {
-			that._getVariable.apply(that, arguments);
-		});
-		document.getElementById("clearLocalStorage").addEventListener("click", function() {
+		//document.getElementById("searchVariable").addEventListener("click", function() {
+		//	that._getVariable.apply(that, arguments);
+		//});
+		document.getElementById("clearMP").addEventListener("click", function() {
 			that._clearLocalStorage.apply(that, arguments);
 		});
-		document.getElementById("removeVariable").addEventListener("click", function() {
-			that._removeVariable.apply(that, arguments);
-		});
-        */
+		//document.getElementById("removeVariable").addEventListener("click", function() {
+		//	that._removeVariable.apply(that, arguments);
+		//});
+        
 	},
     
     
 	_insertVariable:function() {
-		var variableNameInput = document.getElementById("variableNameInput"),
-		valueInput = document.getElementById("valueInput");
+		
+		valueInputName = $("#mpNameValue").val();
+        valueInputConst = $("#mpConstValue").val();
+        valueInputParty = $("#mpPartyValue").val();
+		//alert(valueInput);
+
+        //TODO : need to clear storage if already existant
         
-		localStorage.setItem(variableNameInput.value, valueInput.value);
-		variableNameInput.value = "";
-		valueInput.value = "";
-	},
+        localStorage.setItem("mpName", valueInputName);
+        localStorage.setItem("mpConstituency", valueInputConst);
+        localStorage.setItem("mpParty", valueInputParty);
+	    okMP();
+    },
     
 	_getVariable:function() {
 		var getRemoveVariableNameInput = document.getElementById("getRemoveVariableNameInput"),
@@ -96,11 +123,18 @@ localStorageApp.prototype = {
     
 	_clearLocalStorage:function() {
 		localStorage.clear();
+        noMP();
 	}
 }
 
 function check4MP() {
-    return false;
+    //alter
+    if (localStorage.getItem("mpName").length>1) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 //MP Work //
@@ -123,7 +157,9 @@ function findMPFromGeo() {
      $.getJSON('http://www.theyworkforyou.com/api/getMP?key=GAbXxUAuN3ggAwJjTnEEje9K&postcode=' + geoText,function(result){
         
         $('#foundMP').html("<span class='mp' id='" + result.member_id + "'>You have selected:<br/> " + result.full_name + ", " + result.party + " MP for the " + result.constituency + " constituency. </span> ");
-
+        $('#mpNameValue').val(result.full_name);
+         $('#mpConstValue').val(result.constituency);
+         $('#mpPartyValue').val(result.party);
      });
 }
 

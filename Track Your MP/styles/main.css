@@ -25,6 +25,10 @@ h1#nomp {
     display:none;
 }
 
+h1#mpName {
+    margin-bottom: 0em;
+}
+
 
 .searchZone {
     margin:0px;
