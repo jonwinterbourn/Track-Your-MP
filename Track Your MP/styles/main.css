@@ -68,6 +68,11 @@ div#myLocation {
     margin:0px;
 }
 
+div#geoPostCode {
+    
+    display:none;
+}
+
 div#foundMP {
 
     margin:0px;

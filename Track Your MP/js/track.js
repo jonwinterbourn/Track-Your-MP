@@ -15,7 +15,8 @@ function onDeviceReady() {
     if (!mpSet) {
         noMP();        
     }
-
+    
+    
     
 }
 
@@ -106,27 +107,23 @@ function check4MP() {
 
 function findMPFromPostCode() {
     var inputText = document.getElementById('postCode');
-
-//    sayInputElem.style.display = 'none';
-//    sayTextElem.innerHTML = '';
-//    sayTextElem.style.display = 'block';
-    //sayTextElem.innerHTML = "Test me 2";
     
-  //need a try in here...
-    
-    $.getJSON('http://www.theyworkforyou.com/api/getMP?key=GAbXxUAuN3ggAwJjTnEEje9K&postcode=' + inputText.value,function(result){
+     //need a try in here...
+     $.getJSON('http://www.theyworkforyou.com/api/getMP?key=GAbXxUAuN3ggAwJjTnEEje9K&postcode=' + inputText.value,function(result){
         
-        //$.each(result, function(i, field){
-            //$('#yourMP').append(field + ' ');
         $('#foundMP').html("<span class='mp' id='" + result.member_id + "'>You have selected:<br/> " + result.full_name + ", " + result.party + " MP for the " + result.constituency + " constituency. </span> ");
         
-        /*
-        $('#helloWorldText').append("<div class='fullname'>Constituency: " + result.constituency + "</div> ");
-        $('#helloWorldText').append("<div class='fullname'>Party: " + result.party + "</div> ");
-        $('#helloWorldText').append("<div class='fullname'>Image: http://www.theyworkforyou.com" + result.img + "</div> ");
-        $('#helloWorldText').append("<div class='fullname'>URL: http://www.theyworkforyou.com" + result.url + "</div> ");
-        */
-        //});
+     });
+}
+
+function findMPFromGeo() {
+    var geoText = document.getElementById('geoPostCode').innerHTML.replace(" ","");
+  
+     //need a try in here...    
+     $.getJSON('http://www.theyworkforyou.com/api/getMP?key=GAbXxUAuN3ggAwJjTnEEje9K&postcode=' + geoText,function(result){
+        
+        $('#foundMP').html("<span class='mp' id='" + result.member_id + "'>You have selected:<br/> " + result.full_name + ", " + result.party + " MP for the " + result.constituency + " constituency. </span> ");
+
      });
 }
 
@@ -162,7 +159,17 @@ function onGeolocationSuccess(position) {
     geocoder.geocode({ "latLng": latlng }, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
             if ((results.length > 1) && results[1]) {
+                
+                places_postal = results[1].address_components;
+                postCode = "";
+                for (var i = 0; i < places_postal.length; i++ ) {
+                        if (places_postal[i].types == "postal_code"){
+                            postCode = places_postal[i].long_name;
+                        }
+                }
+                
                 $("#myLocation").html(results[1].formatted_address);
+                $("#geoPostCode").html(postCode);
             }
         }
     });
