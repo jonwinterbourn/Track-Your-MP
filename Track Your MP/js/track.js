@@ -8,7 +8,7 @@ function onDeviceReady() {
     navigator.splashscreen.hide();
 
     //disable unused links til needed
-    $('a#mpActivityMenuLink').addClass('ui-disabled');
+    //$('a#mpActivityMenuLink').addClass('ui-disabled');
     $('a#aboutAppMenuLink').addClass('ui-disabled');
     
     //add local storage
@@ -16,6 +16,7 @@ function onDeviceReady() {
 	localStorageApp.run();
 
     mpSet = check4MP();
+    
     if (!mpSet) {
         noMP();        
     }
@@ -40,8 +41,8 @@ function okMP() {
         $("li#mpActivity").show();
     //set name & details
     $("h1#mpName").text(localStorage.getItem("mpName"));
-    $("div#mpConstituency").append(localStorage.getItem("mpConstituency"));
-    $("div#mpParty").append(localStorage.getItem("mpParty"));
+    $("div#mpConstituency").text("Constituency: " + localStorage.getItem("mpConstituency"));
+    $("div#mpParty").text("Party: " + localStorage.getItem("mpParty"));
     
     //set activity
     
@@ -129,11 +130,16 @@ localStorageApp.prototype = {
 
 function check4MP() {
     //alter
-    if (localStorage.getItem("mpName").length>1) {
-        return true;
+    if (localStorage.getItem("mpName")=== null) {
+        return false;
     }
     else {
-        return false;
+        if (localStorage.getItem("mpName").length > 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
 
@@ -220,4 +226,18 @@ function onGeolocationSuccess(position) {
 // onGeolocationError Callback receives a PositionError object
 function onGeolocationError(error) {
     $("#myLocation").html("<span class='err'>" + error.message + "</span>");
+}
+
+
+//activity
+function setActivity() {
+    var count = 20,
+    $loadMore = $('ul#activities').children('.load-more');
+    $loadMore.bind('click', function () {
+        var out = [];
+        for (var i = 0; i < 10; i++) {
+            out.push('<li>' + (count++) + '</li>');
+        }
+        $('ul#activities').append(out.join('')).append($loadMore).listview('refresh');
+    });
 }
