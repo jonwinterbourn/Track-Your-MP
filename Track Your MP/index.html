@@ -28,7 +28,7 @@
             </div>
             <div class="nav">
                 <ul data-role="listview">
-                    <li id="mpActivity"><a id="mpActivityMenuLink" href="#page1" data-transition="slide" onClick="setActivity();">MP's activity</a></li>
+                    <li id="mpActivity"><a id="mpActivityMenuLink" href="#activityListPage" data-transition="slide">MP's activity</a></li>
                     <li><a href="#page2" data-transition="slide">Find your MP</a></li>
                     <li><a href="#page3" id="aboutAppMenuLink" data-transition="slide">About this App</a></li>
                 </ul>
@@ -38,18 +38,13 @@
             </div>
         </div>
         
-        <div data-role="page" id="page1" data-add-back-btn="true">
+        <div data-role="page" id="activityListPage" data-add-back-btn="true">
             <div data-role="header">
                 <h1>MP's Activity</h1>
-                
             </div>
             <div data-role="content">
-                <ul id="activities" data-role="listview">
-                    <li>1</li>
-                    <li>2</li>
-                    <li>3</li>
-                    <li>4</li>
-                    <li class="load-more"><a href="#">Load More</a></li>
+                <ul id="activityList" data-role="listview">
+                    
                 </ul>
                 <!--
                 <div class="searchZone">
@@ -127,6 +122,7 @@
                 <input type="hidden" id="mpNameValue" class="inputBox" />
                 <input type="hidden" id="mpConstValue" class="inputBox" />
                 <input type="hidden" id="mpPartyValue" class="inputBox" />
+                <input type="hidden" id="mpIdValue" class="inputBox" />
             
                 <div id="navgroup">
                     <div data-role="controlgroup" data-type="horizontal">

@@ -88,6 +88,7 @@ localStorageApp.prototype = {
 		valueInputName = $("#mpNameValue").val();
         valueInputConst = $("#mpConstValue").val();
         valueInputParty = $("#mpPartyValue").val();
+        valueInputId = $("#mpIdValue").val();
 		//alert(valueInput);
 
         //TODO : need to clear storage if already existant
@@ -95,7 +96,8 @@ localStorageApp.prototype = {
         localStorage.setItem("mpName", valueInputName);
         localStorage.setItem("mpConstituency", valueInputConst);
         localStorage.setItem("mpParty", valueInputParty);
-	    okMP();
+        localStorage.setItem("mpId", valueInputId);
+        okMP();
     },
     
 	_getVariable:function() {
@@ -162,34 +164,12 @@ function findMPFromGeo() {
      //need a try in here...    
      $.getJSON('http://www.theyworkforyou.com/api/getMP?key=GAbXxUAuN3ggAwJjTnEEje9K&postcode=' + geoText,function(result){
         
-        $('#foundMP').html("<span class='mp' id='" + result.member_id + "'>You have selected:<br/> " + result.full_name + ", " + result.party + " MP for the " + result.constituency + " constituency. </span> ");
+        $('#foundMP').html("<span class='mp' id='" + result.person_id + "'>You have selected:<br/> " + result.full_name + ", " + result.party + " MP for the " + result.constituency + " constituency. </span> ");
         $('#mpNameValue').val(result.full_name);
          $('#mpConstValue').val(result.constituency);
          $('#mpPartyValue').val(result.party);
+         $('#mpIdValue').val(result.person_id);
      });
-}
-
-
-  
-//=======================Say Hello (Page 1) Operations=======================//
-function sayHello() {
-    var sayHelloInputElem = document.getElementById('helloWorldInput');
-    var sayHelloTextElem = document.getElementById('helloWorldText');
-    var inputText = document.getElementById('txtName');
-    
-    sayHelloTextElem.innerHTML = 'Hello, ' + inputText.value + '!';
-    sayHelloTextElem.style.display = 'block';
-    sayHelloInputElem.style.display = 'none';
-}
-
-function sayHelloReset() {
-    var sayHelloInputElem = document.getElementById('helloWorldInput');
-    var sayHelloTextElem = document.getElementById('helloWorldText');
-    var inputText = document.getElementById('txtName');
-    
-    inputText.value = '';
-    sayHelloTextElem.style.display = 'none';
-    sayHelloInputElem.style.display = 'block';
 }
 
 //=======================Geolocation Operations=======================//
@@ -230,6 +210,7 @@ function onGeolocationError(error) {
 
 
 //activity
+/*
 function setActivity() {
     var count = 20,
     $loadMore = $('ul#activities').children('.load-more');
@@ -238,6 +219,42 @@ function setActivity() {
         for (var i = 0; i < 10; i++) {
             out.push('<li>' + (count++) + '</li>');
         }
-        $('ul#activities').append(out.join('')).append($loadMore).listview('refresh');
+        $('ul#activityList').append(out.join('')).append($loadMore).listview('refresh');
     });
+}
+*/
+
+var activities;
+
+$('#activityListPage').live('pageinit', function(event) {
+	getActivityList();
+});
+
+function getActivityList() {
+	/*
+    $.getJSON(serviceURL + 'getemployees.php', function(data) {
+		$('#employeeList li').remove();
+		employees = data.items;
+		$.each(employees, function(index, employee) {
+			$('#employeeList').append('<li><a href="employeedetails.html?id=' + employee.id + '">' +
+					'<img src="pics/' + employee.picture + '"/>' +
+					'<h4>' + employee.firstName + ' ' + employee.lastName + '</h4>' +
+					'<p>' + employee.title + '</p>' +
+					'<span class="ui-li-count">' + employee.reportCount + '</span></a></li>');
+		});
+		$('#employeeList').listview('refresh');
+	});
+    */
+    id = localStorage.getItem("mpId");
+    //alert(id);
+    url = 'http://www.theyworkforyou.com/api/getHansard?key=GAbXxUAuN3ggAwJjTnEEje9K&person=' + id + '&num=3&order=d';
+    //alert(url);
+    $.getJSON(url,function(result){
+        $('#activityList li').remove();
+		activities = result.rows;
+        $.each(activities, function(index, activity){
+            $('#activityList').append("<li>" + activity.parent.body + "<br/>" + activity.extract + ",<br/>" + activity.listurl + "</li> ");
+        });
+        $('#activityList').listview('refresh');
+     });
 }
