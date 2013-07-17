@@ -150,27 +150,44 @@ function check4MP() {
 function findMPFromPostCode() {
     var inputText = document.getElementById('postCode');
     
-     //need a try in here...
      $.getJSON('http://www.theyworkforyou.com/api/getMP?key=GAbXxUAuN3ggAwJjTnEEje9K&postcode=' + inputText.value,function(result){
         
-        $('#foundMP').html("<span class='mp' id='" + result.member_id + "'>You have selected:<br/> " + result.full_name + ", " + result.party + " MP for the " + result.constituency + " constituency. </span> ");
-        
+        if (result.person_id !=null) {
+            $('#foundMP').html("<span class='mp' id='" + result.person_id + "'>You have selected:<br/> " + result.full_name + ", " + result.party + " MP for the " + result.constituency + " constituency. </span> ");
+            setHiddenFields(result); 
+        }
+        else {
+            $('#foundMP').html("Postcode provided cannot be resolved to a <strong>full</strong> UK postcode - please check the input.");
+        }
+
      });
 }
 
 function findMPFromGeo() {
     var geoText = document.getElementById('geoPostCode').innerHTML.replace(" ","");
   
-     //need a try in here...    
-     $.getJSON('http://www.theyworkforyou.com/api/getMP?key=GAbXxUAuN3ggAwJjTnEEje9K&postcode=' + geoText,function(result){
+    $.getJSON('http://www.theyworkforyou.com/api/getMP?key=GAbXxUAuN3ggAwJjTnEEje9K&postcode=' + geoText,function(result){
+    
+        if (result.person_id !=null) {
+            $('#foundMP').html("<span class='mp' id='" + result.person_id + "'>You have selected:<br/> " + result.full_name + ", " + result.party + " MP for the " + result.constituency + " constituency. </span> ");
+            setHiddenFields(result); 
+        }
+        else {
+            $('#foundMP').html("Geolocation cannot be resolved to a <strong>full</strong> UK postcode at this time.");
+        }
         
-        $('#foundMP').html("<span class='mp' id='" + result.person_id + "'>You have selected:<br/> " + result.full_name + ", " + result.party + " MP for the " + result.constituency + " constituency. </span> ");
-        $('#mpNameValue').val(result.full_name);
-         $('#mpConstValue').val(result.constituency);
-         $('#mpPartyValue').val(result.party);
-         $('#mpIdValue').val(result.person_id);
-     });
+    });
+    
 }
+
+function setHiddenFields(result) {
+        $('#mpNameValue').val(result.full_name);
+        $('#mpConstValue').val(result.constituency);
+        $('#mpPartyValue').val(result.party);
+        $('#mpIdValue').val(result.person_id);
+    
+}
+
 
 //=======================Geolocation Operations=======================//
 // onGeolocationSuccess Geolocation
