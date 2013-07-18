@@ -248,30 +248,34 @@ $('#activityListPage').live('pageinit', function(event) {
 });
 
 function getActivityList() {
-	/*
-    $.getJSON(serviceURL + 'getemployees.php', function(data) {
-		$('#employeeList li').remove();
-		employees = data.items;
-		$.each(employees, function(index, employee) {
-			$('#employeeList').append('<li><a href="employeedetails.html?id=' + employee.id + '">' +
-					'<img src="pics/' + employee.picture + '"/>' +
-					'<h4>' + employee.firstName + ' ' + employee.lastName + '</h4>' +
-					'<p>' + employee.title + '</p>' +
-					'<span class="ui-li-count">' + employee.reportCount + '</span></a></li>');
-		});
-		$('#employeeList').listview('refresh');
-	});
-    */
+    
+    //id = 0;
+	
     id = localStorage.getItem("mpId");
-    //alert(id);
+    moreUrlPrefix = "http://www.theyworkforyou.com";
     url = 'http://www.theyworkforyou.com/api/getHansard?key=GAbXxUAuN3ggAwJjTnEEje9K&person=' + id + '&num=3&order=d';
-    //alert(url);
-    $.getJSON(url,function(result){
+    
+    
+     $.getJSON(url,function(result){
         $('#activityList li').remove();
 		activities = result.rows;
         $.each(activities, function(index, activity){
-            $('#activityList').append("<li>" + activity.parent.body + "<br/>" + activity.extract + ",<br/>" + activity.listurl + "</li> ");
+            activHeader =  activity.parent.body;
+            activExtract = activity.extract;
+            activUrl = activity.listurl;
+            activDateStr = activity.hdate + " " + activity.htime;
+            $('#activityList').append("<li data-role='list-divider'>" + activHeader + "</li>");
+            $('#activityList').append("<li class='activityExtract'><span clas='datestr'>"+ activDateStr + "</span><br/>" + activExtract + "</li>");
+            $('#activityList').append("<li><a rel='external' href='" + moreUrlPrefix + activUrl + "' data-role='button' data-icon='arrow-r'>Read more...</a></li>");
         });
         $('#activityList').listview('refresh');
      });
+}
+
+function openHansardURL(url) {
+    //window.open(url, "_blank"); 
+//    alert(url);
+//    return false;
+    navigator.app.loadUrl(url, { openExternal:true } );
+    
 }
