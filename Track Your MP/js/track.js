@@ -14,6 +14,8 @@ function onDeviceReady() {
     //add local storage
     localStorageApp = new localStorageApp();
 	localStorageApp.run();
+    
+
 
     mpSet = check4MP();
     
@@ -244,17 +246,23 @@ function setActivity() {
 var activities;
 
 $('#activityListPage').live('pageinit', function(event) {
+//	getActivityList();
+});
+
+$('#activityListPage').live('pageshow', function(event) {
 	getActivityList();
 });
 
 function getActivityList() {
+
     
     //id = 0;
 	
     id = localStorage.getItem("mpId");
+    //alert(id);
     moreUrlPrefix = "http://www.theyworkforyou.com";
     url = 'http://www.theyworkforyou.com/api/getHansard?key=GAbXxUAuN3ggAwJjTnEEje9K&person=' + id + '&num=3&order=d';
-    
+ 
     
      $.getJSON(url,function(result){
         $('#activityList li').remove();
@@ -270,6 +278,7 @@ function getActivityList() {
         });
         $('#activityList').listview('refresh');
      });
+//}
 }
 
 function openHansardURL(url) {
