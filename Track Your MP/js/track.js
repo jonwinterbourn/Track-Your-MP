@@ -15,7 +15,14 @@ function onDeviceReady() {
     localStorageApp = new localStorageApp();
 	localStorageApp.run();
     
-
+    //test
+    if (window.File && window.FileReader && window.FileList && window.Blob) {
+        // Great success! All the File APIs are supported.
+    
+        //alert("all ok");
+    } else {
+        alert('The File APIs are not fully supported in this browser.');
+    }
 
     mpSet = check4MP();
     
@@ -45,7 +52,11 @@ function okMP() {
     $("h1#mpName").text(localStorage.getItem("mpName"));
     $("div#mpConstituency").text("Constituency: " + localStorage.getItem("mpConstituency"));
     $("div#mpParty").text("Party: " + localStorage.getItem("mpParty"));
-    
+    $("div#enteredHouse").text("Entered House: " + localStorage.getItem("enteredHouse"));
+    portrait = $("#mpPortrait");
+    mpImg = document.createElement("IMG");
+    mpImg.setAttribute("src", localStorage.getItem("portrait"));
+    portrait.html(mpImg);
     //set activity
     
  
@@ -72,15 +83,10 @@ localStorageApp.prototype = {
         document.getElementById("saveMP").addEventListener("click", function() {
 			that._insertVariable.apply(that, arguments);
 		});
-		//document.getElementById("searchVariable").addEventListener("click", function() {
-		//	that._getVariable.apply(that, arguments);
-		//});
+
 		document.getElementById("clearMP").addEventListener("click", function() {
 			that._clearLocalStorage.apply(that, arguments);
 		});
-		//document.getElementById("removeVariable").addEventListener("click", function() {
-		//	that._removeVariable.apply(that, arguments);
-		//});
         
 	},
     
@@ -91,6 +97,9 @@ localStorageApp.prototype = {
         valueInputConst = $("#mpConstValue").val();
         valueInputParty = $("#mpPartyValue").val();
         valueInputId = $("#mpIdValue").val();
+        valueInputMemberId = $("#member_id").val();
+        valueInputImage = $("#mpImage").val();
+        valueInputEntered = $("#enteredHouse").val();
 		//alert(valueInput);
 
         //TODO : need to clear storage if already existant
@@ -99,6 +108,17 @@ localStorageApp.prototype = {
         localStorage.setItem("mpConstituency", valueInputConst);
         localStorage.setItem("mpParty", valueInputParty);
         localStorage.setItem("mpId", valueInputId);
+        localStorage.setItem("member_id", valueInputMemberId);
+        localStorage.setItem("mpImage", "http://www.theyworkforyou.com" + valueInputImage);
+        localStorage.setItem("enteredHouse", valueInputEntered);
+
+        try {
+            localStorage.setItem("portrait", imgAsDataURL);
+        }
+        catch (e) {
+            console.log("Storage failed: " + e);
+        }
+        
         okMP();
     },
     
@@ -187,7 +207,24 @@ function setHiddenFields(result) {
         $('#mpConstValue').val(result.constituency);
         $('#mpPartyValue').val(result.party);
         $('#mpIdValue').val(result.person_id);
+        //secondary fields
+        $('#enteredHouse').val(result.entered_house);
+        $('#mpImage').val(result.image);
+        $('#member_id').val(result.member_id);
     
+       
+        var img = document.createElement("IMG");
+	    img.src = "http://www.theyworkforyou.com" + result.image;
+    
+        var imgCanvas = document.createElement("canvas"),
+            imgContext = imgCanvas.getContext("2d");
+        imgCanvas.width = img.width;
+        imgCanvas.height = img.height;
+        // Draw image into canvas element
+        imgContext.drawImage(img, 0, 0, img.width, img.height);
+        // Get canvas contents as a data URL
+        imgAsDataURL = imgCanvas.toDataURL("image/png");
+        $('#mp_portrait').val(imgAsDataURL);
 }
 
 
@@ -228,26 +265,8 @@ function onGeolocationError(error) {
 }
 
 
-//activity
-/*
-function setActivity() {
-    var count = 20,
-    $loadMore = $('ul#activities').children('.load-more');
-    $loadMore.bind('click', function () {
-        var out = [];
-        for (var i = 0; i < 10; i++) {
-            out.push('<li>' + (count++) + '</li>');
-        }
-        $('ul#activityList').append(out.join('')).append($loadMore).listview('refresh');
-    });
-}
-*/
-
 var activities;
 
-$('#activityListPage').live('pageinit', function(event) {
-//	getActivityList();
-});
 
 $('#activityListPage').live('pageshow', function(event) {
 	getActivityList();
@@ -261,7 +280,7 @@ function getActivityList() {
     id = localStorage.getItem("mpId");
     //alert(id);
     moreUrlPrefix = "http://www.theyworkforyou.com";
-    url = 'http://www.theyworkforyou.com/api/getHansard?key=GAbXxUAuN3ggAwJjTnEEje9K&person=' + id + '&num=3&order=d';
+    url = 'http://www.theyworkforyou.com/api/getHansard?key=GAbXxUAuN3ggAwJjTnEEje9K&person=' + id + '&num=10&order=d';
  
     
      $.getJSON(url,function(result){
@@ -271,7 +290,12 @@ function getActivityList() {
             activHeader =  activity.parent.body;
             activExtract = activity.extract;
             activUrl = activity.listurl;
-            activDateStr = activity.hdate + " " + activity.htime;
+            if (activity.htime != null) {
+                activDateStr = activity.hdate + " " + activity.htime;  
+            }
+            else {
+                activDateStr = activity.hdate;
+            }
             $('#activityList').append("<li data-role='list-divider'>" + activHeader + "</li>");
             $('#activityList').append("<li class='activityExtract'><span clas='datestr'>"+ activDateStr + "</span><br/>" + activExtract + "</li>");
             $('#activityList').append("<li><a rel='external' href='" + moreUrlPrefix + activUrl + "' data-role='button' data-icon='arrow-r'>Read more...</a></li>");
@@ -282,9 +306,7 @@ function getActivityList() {
 }
 
 function openHansardURL(url) {
-    //window.open(url, "_blank"); 
-//    alert(url);
-//    return false;
+
     navigator.app.loadUrl(url, { openExternal:true } );
     
 }

@@ -92,3 +92,18 @@ span.noMPFound {
 
 #navgroup {text-align:center;}
 #navgroup div {display:inline-block;}
+
+div.loadMore {
+    margin-top:15px;
+}
+
+div.mpDetails div {
+    width:70%;
+    float:right;
+}
+
+
+div#mpPortrait {
+    float:left;
+    width:25%;
+}

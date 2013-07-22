@@ -22,8 +22,12 @@
                 <h1 id="nomp">No MP Selected</h1>
                 <h1 id="mpName">MP Name</h1>
                 <div class="mpDetails">
+                    <div id="mpPortrait"></div>
                     <div id="mpParty"></div>
                     <div id="mpConstituency"></div>
+                    <div id="enteredHouse"></div>
+                    
+                    
                 </div>
             </div>
             <div class="nav">
@@ -46,6 +50,12 @@
                 <ul id="activityList" data-role="listview">
                     
                 </ul> 
+                <!--
+                <div class="loadMore">
+                    <a href="#" data-inline="true" data-icon="plus" data-role="button" data-min="true" onClick="getMore();">Load more...</a>
+                    
+                </div>
+                -->
             </div>
             <div data-role="footer" data-position="fixed" data-id="oneFooter">
                 <span class="footerText">Tuck Software</span>
@@ -87,7 +97,11 @@
                 <input type="hidden" id="mpConstValue" class="inputBox" />
                 <input type="hidden" id="mpPartyValue" class="inputBox" />
                 <input type="hidden" id="mpIdValue" class="inputBox" />
-            
+                <input type="hidden" id="enteredHouse" class="inputBox" />
+                <input type="hidden" id="mpImage" class="inputBox" />
+                <input type="hidden" id="member_id" class="inputBox" />
+                <input type="hidden" id="mp_portrait" class="inputBox" />
+                
                 <div id="navgroup">
                     <div data-role="controlgroup" data-type="horizontal">
                     <a href="index.html" id="saveMP" data-inline="true" data-icon="plus" data-role="button">Save</a>
