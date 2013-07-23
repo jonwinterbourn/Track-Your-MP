@@ -55,7 +55,13 @@ function okMP() {
     $("div#enteredHouse").text("Entered House: " + localStorage.getItem("enteredHouse"));
     portrait = $("#mpPortrait");
     mpImg = document.createElement("IMG");
-    mpImg.setAttribute("src", localStorage.getItem("portrait"));
+    if (localStorage.getItem("portrait")) {
+        mpImg.setAttribute("src", localStorage.getItem("portrait"));
+    }
+    else {
+        mpImg.setAttribute("src", localStorage.getItem("mpImage"));
+    }
+    
     portrait.html(mpImg);
     //set activity
     
