@@ -106,7 +106,8 @@ localStorageApp.prototype = {
         valueInputMemberId = $("#member_id").val();
         valueInputImage = $("#mpImage").val();
         valueInputEntered = $("#enteredHouse").val();
-		//alert(valueInput);
+        fullImgUrl = "http://www.theyworkforyou.com" + valueInputImage;
+        //alert(valueInput);
 
         //TODO : need to clear storage if already existant
         
@@ -115,17 +116,67 @@ localStorageApp.prototype = {
         localStorage.setItem("mpParty", valueInputParty);
         localStorage.setItem("mpId", valueInputId);
         localStorage.setItem("member_id", valueInputMemberId);
-        localStorage.setItem("mpImage", "http://www.theyworkforyou.com" + valueInputImage);
+        localStorage.setItem("mpImage", fullImgUrl);
         localStorage.setItem("enteredHouse", valueInputEntered);
 
-        try {
-            localStorage.setItem("portrait", imgAsDataURL);
-        }
-        catch (e) {
-            console.log("Storage failed: " + e);
-        }
+        //img
+//        function getImgAsData(imageSrc) {
+//        var img = document.createElement("IMG");
+//	    img.src = imageSrc;    
+    
+//        var imgCanvas = document.createElement("canvas"),
+//        imgContext = imgCanvas.getContext("2d");
+//        imgCanvas.width = img.width;
+//        imgCanvas.height = img.height;
+        // Draw image into canvas element
+//        imgContext.drawImage(img, 0, 0, img.width, img.height);
+        // Get canvas contents as a data URL
+    
+//        return imgCanvas.toDataURL("image/png");
+    
         
+        var xhr = new XMLHttpRequest(),
+        fileReader = new FileReader();
+ 
+        xhr.open("GET", fullImgUrl, true);
+        // Set the responseType to blob
+        xhr.responseType = "blob";
+ 
+        xhr.addEventListener("load", function () {
+            if (xhr.status === 200) {
+            // onload needed since Google Chrome doesn't support addEventListener for FileReader
+                fileReader.onload = function (evt) {
+                    // Read out file contents as a Data URL
+                    var result = evt.target.result;
+                    // Set image src to Data URL
+                    //rhino.setAttribute("src", result);
+                    // Store Data URL in localStorage
+                    try {
+                        localStorage.setItem("portrait", result);
+                    }
+                    catch (e) {
+                        console.log("Storage failed: " + e);
+                    }
+                };
+                // Load blob as Data URL
+                fileReader.readAsDataURL(xhr.response);
+                //return result
+            }
+        }, false);
+        // Send XHR
+        xhr.send();
+    //}
+        
+    //    try {
+    //        localStorage.setItem("portrait", imgAsDataURL);
+    //    }
+    //    catch (e) {
+    //        console.log("Storage failed: " + e);
+    //    }
+        
+        setTimeout(okMP(),5000);
         okMP();
+        $.mobile.changePage('#home');
     },
     
 	_getVariable:function() {
@@ -209,6 +260,11 @@ function findMPFromGeo() {
 }
 
 function setHiddenFields(result) {
+           
+//        imgAsDataURL = getImgAsData("http://www.theyworkforyou.com" + result.image);
+//        alert(imgAsDataURL);
+//        $('#mp_portrait').val(imgAsDataURL);
+
         $('#mpNameValue').val(result.full_name);
         $('#mpConstValue').val(result.constituency);
         $('#mpPartyValue').val(result.party);
@@ -217,21 +273,15 @@ function setHiddenFields(result) {
         $('#enteredHouse').val(result.entered_house);
         $('#mpImage').val(result.image);
         $('#member_id').val(result.member_id);
-    
-       
-        var img = document.createElement("IMG");
-	    img.src = "http://www.theyworkforyou.com" + result.image;
-    
-        var imgCanvas = document.createElement("canvas"),
-            imgContext = imgCanvas.getContext("2d");
-        imgCanvas.width = img.width;
-        imgCanvas.height = img.height;
-        // Draw image into canvas element
-        imgContext.drawImage(img, 0, 0, img.width, img.height);
-        // Get canvas contents as a data URL
-        imgAsDataURL = imgCanvas.toDataURL("image/png");
-        $('#mp_portrait').val(imgAsDataURL);
 }
+
+
+
+    
+    
+    
+    
+
 
 
 //=======================Geolocation Operations=======================//
