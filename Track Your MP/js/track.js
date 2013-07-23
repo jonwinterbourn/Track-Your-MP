@@ -48,11 +48,13 @@ function okMP() {
         $("h1#mpName").show();
         $("div.mpDetails").show();
         $("li#mpActivity").show();
+    
     //set name & details
     $("h1#mpName").text(localStorage.getItem("mpName"));
     $("div#mpConstituency").text("Constituency: " + localStorage.getItem("mpConstituency"));
     $("div#mpParty").text("Party: " + localStorage.getItem("mpParty"));
     $("div#enteredHouse").text("Entered House: " + localStorage.getItem("enteredHouse"));
+    
     portrait = $("#mpPortrait");
     mpImg = document.createElement("IMG");
     if (localStorage.getItem("portrait")) {
@@ -65,7 +67,7 @@ function okMP() {
     portrait.html(mpImg);
     //set activity
     
- 
+     
 }
 
 function getLocation() {
@@ -118,22 +120,6 @@ localStorageApp.prototype = {
         localStorage.setItem("member_id", valueInputMemberId);
         localStorage.setItem("mpImage", fullImgUrl);
         localStorage.setItem("enteredHouse", valueInputEntered);
-
-        //img
-//        function getImgAsData(imageSrc) {
-//        var img = document.createElement("IMG");
-//	    img.src = imageSrc;    
-    
-//        var imgCanvas = document.createElement("canvas"),
-//        imgContext = imgCanvas.getContext("2d");
-//        imgCanvas.width = img.width;
-//        imgCanvas.height = img.height;
-        // Draw image into canvas element
-//        imgContext.drawImage(img, 0, 0, img.width, img.height);
-        // Get canvas contents as a data URL
-    
-//        return imgCanvas.toDataURL("image/png");
-    
         
         var xhr = new XMLHttpRequest(),
         fileReader = new FileReader();
@@ -148,9 +134,6 @@ localStorageApp.prototype = {
                 fileReader.onload = function (evt) {
                     // Read out file contents as a Data URL
                     var result = evt.target.result;
-                    // Set image src to Data URL
-                    //rhino.setAttribute("src", result);
-                    // Store Data URL in localStorage
                     try {
                         localStorage.setItem("portrait", result);
                     }
@@ -165,18 +148,25 @@ localStorageApp.prototype = {
         }, false);
         // Send XHR
         xhr.send();
-    //}
         
-    //    try {
-    //        localStorage.setItem("portrait", imgAsDataURL);
-    //    }
-    //    catch (e) {
-    //        console.log("Storage failed: " + e);
-    //    }
+        //set content on home page
+        $("h1#mpName").text(valueInputName);
+        $("div#mpConstituency").text("Constituency: " + valueInputConst);
+        $("div#mpParty").text("Party: " + valueInputParty);
+        //$("div#enteredHouse").text("Entered House: " + localStorage.getItem("enteredHouse"));
+        portrait = $("#mpPortrait");
+        mpImg = document.createElement("IMG");
+        mpImg.setAttribute("src", fullImgUrl);
+        portrait.html(mpImg);
         
-        setTimeout(okMP(),5000);
-        okMP();
-        $.mobile.changePage('#home');
+        $("h1#nomp").hide();
+        $("h1#mpName").show();
+        $("div.mpDetails").show();
+        $("li#mpActivity").show();
+        //setTimeout($.mobile.changePage('#home'),1000);
+        
+        setTimeout("goHome()",1000);
+        $.mobile.showPageLoadingMsg();
     },
     
 	_getVariable:function() {
@@ -207,6 +197,11 @@ localStorageApp.prototype = {
 		localStorage.clear();
         noMP();
 	}
+}
+
+function goHome(){
+    $.mobile.hidePageLoadingMsg();
+    $.mobile.changePage('#home');
 }
 
 function check4MP() {
