@@ -10,6 +10,9 @@ function onDeviceReady() {
     //disable unused links til needed
     //$('a#mpActivityMenuLink').addClass('ui-disabled');
     $('a#aboutAppMenuLink').addClass('ui-disabled');
+    //$('a#mpNewsMenuLink').addClass('ui-disabled');
+    $('a#mpTweetsMenuLink').addClass('ui-disabled');
+    $('a#settingsMenuLink').addClass('ui-disabled');
     
     //add local storage
     localStorageApp = new localStorageApp();
@@ -41,6 +44,8 @@ function noMP() {
         $("h1#mpName").hide();
         $("div.mpDetails").hide();
         $("li#mpActivity").hide();
+        $("li#mpNews").hide();
+        $("li#mpTweets").hide();
 }
 
 function okMP() {
@@ -48,6 +53,8 @@ function okMP() {
         $("h1#mpName").show();
         $("div.mpDetails").show();
         $("li#mpActivity").show();
+    $("li#mpNews").show();
+        $("li#mpTweets").show();
     
     //set name & details
     $("h1#mpName").text(localStorage.getItem("mpName"));
@@ -66,8 +73,7 @@ function okMP() {
     
     portrait.html(mpImg);
     //set activity
-    
-     
+
 }
 
 function getLocation() {
@@ -149,6 +155,8 @@ localStorageApp.prototype = {
         // Send XHR
         xhr.send();
         
+        setConstituencyIds(valueInputConst);
+        
         //set content on home page
         $("h1#mpName").text(valueInputName);
         $("div#mpConstituency").text("Constituency: " + valueInputConst);
@@ -192,7 +200,6 @@ localStorageApp.prototype = {
 		}
 	},
 
-    
 	_clearLocalStorage:function() {
 		localStorage.clear();
         noMP();
@@ -235,16 +242,18 @@ function findMPFromPostCode() {
         }
 
      });
+    
 }
 
 function findMPFromGeo() {
     var geoText = document.getElementById('geoPostCode').innerHTML.replace(" ","");
-  
+    var fullname;  
     $.getJSON('http://www.theyworkforyou.com/api/getMP?key=GAbXxUAuN3ggAwJjTnEEje9K&postcode=' + geoText,function(result){
     
         if (result.person_id !=null) {
             $('#foundMP').html("<span class='mp' id='" + result.person_id + "'>You have selected:<br/> " + result.full_name + ", " + result.party + " MP for the " + result.constituency + " constituency. </span> ");
-            setHiddenFields(result); 
+            setHiddenFields(result);
+            fullname = result.full_name;
         }
         else {
             $('#foundMP').html("Geolocation cannot be resolved to a <strong>full</strong> UK postcode at this time.");
@@ -252,14 +261,12 @@ function findMPFromGeo() {
         
     });
     
+    
+    
 }
 
 function setHiddenFields(result) {
            
-//        imgAsDataURL = getImgAsData("http://www.theyworkforyou.com" + result.image);
-//        alert(imgAsDataURL);
-//        $('#mp_portrait').val(imgAsDataURL);
-
         $('#mpNameValue').val(result.full_name);
         $('#mpConstValue').val(result.constituency);
         $('#mpPartyValue').val(result.party);
@@ -270,14 +277,17 @@ function setHiddenFields(result) {
         $('#member_id').val(result.member_id);
 }
 
+function setConstituencyIds(constituencyName) {
 
-
+    $.getJSON('http://www.theyworkforyou.com/api/getConstituency?key=GAbXxUAuN3ggAwJjTnEEje9K&name=' + constituencyName,function(result){
     
-    
-    
-    
-
-
+        if (result.guardian_id !=null) {
+            localStorage.setItem("aristotleConstituencyIdValue", result.guardian_id);
+        }
+        
+    });    
+}
+   
 
 //=======================Geolocation Operations=======================//
 // onGeolocationSuccess Geolocation
@@ -315,9 +325,43 @@ function onGeolocationError(error) {
     $("#myLocation").html("<span class='err'>" + error.message + "</span>");
 }
 
+//----------------------    NEWS    -----------------------------//
+
+//http://content.guardianapis.com/search?q=dominic+grieve&format=json&api-key=3ktbtu9pmqpsbkbgdvq4jnbv
+//http://content.guardianapis.com/search?q=dominic+grieve&format=json&show-fields=trailText%2Cheadline%2Cscore%2Ccommentable%2CcommentCloseDate%2CshortUrl&api-key=3ktbtu9pmqpsbkbgdvq4jnbv
+var apiKey = "3ktbtu9pmqpsbkbgdvq4jnbv";
+var news;
+
+$('#newsListPage').live('pageshow', function(event) {
+	getNewsList();
+}); 
+
+function getNewsList() {
+
+    name = localStorage.getItem("mpName");
+    url = "http://content.guardianapis.com/search?q=" + name + "&format=json&show-fields=trailText%2Cheadline%2Cscore%2Ccommentable%2CcommentCloseDate%2CshortUrl&api-key=" + apiKey;
+    
+    
+     $.getJSON(url,function(result){
+        $('#newsList li').remove();
+         news = result.response.results;
+        $.each(news, function(index, item){
+            newsHeadline =  item.fields.headline;
+            newsTrail = item.fields.trailText;
+            newsUrl = item.fields.shortUrl;
+            newsDateStr = item.webPublicationDate;
+            $('#newsList').append("<li data-role='list-divider'>" + newsHeadline + "</li>");
+            $('#newsList').append("<li class='newsTrail'><span clas='datestr'>"+ newsDateStr + "</span><br/>" + newsTrail + "</li>");
+            $('#newsList').append("<li><a rel='external' href='" + newsUrl + "' data-role='button' data-icon='arrow-r'>Read article...</a></li>");
+        });
+        $('#newsList').listview('refresh');
+     });
+}
+
+
+//---------------------- ACTIVITIES -----------------------------//
 
 var activities;
-
 
 $('#activityListPage').live('pageshow', function(event) {
 	getActivityList();
@@ -325,14 +369,10 @@ $('#activityListPage').live('pageshow', function(event) {
 
 function getActivityList() {
 
-    
-    //id = 0;
-	
     id = localStorage.getItem("mpId");
     //alert(id);
     moreUrlPrefix = "http://www.theyworkforyou.com";
     url = 'http://www.theyworkforyou.com/api/getHansard?key=GAbXxUAuN3ggAwJjTnEEje9K&person=' + id + '&num=10&order=d';
- 
     
      $.getJSON(url,function(result){
         $('#activityList li').remove();
@@ -353,7 +393,6 @@ function getActivityList() {
         });
         $('#activityList').listview('refresh');
      });
-//}
 }
 
 function openHansardURL(url) {
@@ -361,3 +400,34 @@ function openHansardURL(url) {
     navigator.app.loadUrl(url, { openExternal:true } );
     
 }
+
+function getAristotleIdFromPoliticsApi(guardian_constituency_id) {
+    
+    url = "http://www.guardian.co.uk/politics/api/general-election/2010/results/json";
+    url= "http://www.guardian.co.uk/politics/api/constituency/" + guardian_constituency_id + "/json/"
+    $.getJSON(url, function(data){
+        results = data.results;
+        $.each(results, function(index, result) {
+           alert(result.winning-mp.name); 
+        });
+        /*
+        $.each(activities, function(index, activity){
+            activHeader =  activity.parent.body;
+            activExtract = activity.extract;
+            activUrl = activity.listurl;
+            if (activity.htime != null) {
+                activDateStr = activity.hdate + " " + activity.htime;  
+            }
+            else {
+                activDateStr = activity.hdate;
+            }
+            $('#activityList').append("<li data-role='list-divider'>" + activHeader + "</li>");
+            $('#activityList').append("<li class='activityExtract'><span clas='datestr'>"+ activDateStr + "</span><br/>" + activExtract + "</li>");
+            $('#activityList').append("<li><a rel='external' href='" + moreUrlPrefix + activUrl + "' data-role='button' data-icon='arrow-r'>Read more...</a></li>");
+        });
+        $('#activityList').listview('refresh');
+        */
+     });
+        
+}
+

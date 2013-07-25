@@ -25,15 +25,18 @@
                     <div id="mpPortrait"></div>
                     <div id="mpParty"></div>
                     <div id="mpConstituency"></div>
-                    <div id="enteredHouse"></div>
+                    <!--<div id="enteredHouse"></div>-->
                     
                     
                 </div>
             </div>
             <div class="nav">
                 <ul data-role="listview">
-                    <li id="mpActivity"><a id="mpActivityMenuLink" href="#activityListPage" data-transition="slide">MP's activity</a></li>
+                    <li id="mpActivity"><a id="mpActivityMenuLink" href="#activityListPage" data-transition="slide">MP's parliamentary activity</a></li>
+                    <li id="mpNews"><a id="mpNewsMenuLink" href="#newsListPage" data-transition="slide">MP in the news</a></li>
+                    <li id="mpTweets"><a id="mpTweetsMenuLink" href="#tweetsListPage" data-transition="slide">MP on Twitter</a></li>
                     <li><a href="#page2" data-transition="slide">Find your MP</a></li>
+                    <li><a href="#settings" id="settingsMenuLink" data-transition="slide">Settings</a></li>
                     <li><a href="#page3" id="aboutAppMenuLink" data-transition="slide">About this App</a></li>
                 </ul>
             </div>
@@ -56,6 +59,21 @@
                     
                 </div>
                 -->
+            </div>
+            <div data-role="footer" data-position="fixed" data-id="oneFooter">
+                <span class="footerText">Tuck Software</span>
+            </div>
+        </div>
+        
+        <div data-role="page" id="newsListPage" data-add-back-btn="true">
+            <div data-role="header">
+                <h1>MP in the news</h1>
+                <!--<p align="center">Data source: guardian.co.uk</p>-->
+            </div>
+            <div data-role="content">
+                <ul id="newsList" data-role="listview">
+                    
+                </ul> 
             </div>
             <div data-role="footer" data-position="fixed" data-id="oneFooter">
                 <span class="footerText">Tuck Software</span>
