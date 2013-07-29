@@ -11,7 +11,7 @@ function onDeviceReady() {
     //$('a#mpActivityMenuLink').addClass('ui-disabled');
     $('a#aboutAppMenuLink').addClass('ui-disabled');
     //$('a#mpNewsMenuLink').addClass('ui-disabled');
-    $('a#mpTweetsMenuLink').addClass('ui-disabled');
+    //$('a#mpTweetsMenuLink').addClass('ui-disabled');
     $('a#settingsMenuLink').addClass('ui-disabled');
     
     //add local storage
@@ -37,6 +37,8 @@ function onDeviceReady() {
         okMP();
     }
     
+    
+ 
 }
 
 function noMP() {
@@ -341,7 +343,6 @@ function getNewsList() {
     name = localStorage.getItem("mpName");
     url = "http://content.guardianapis.com/search?q=" + name + "&format=json&show-fields=trailText%2Cheadline%2Cscore%2Ccommentable%2CcommentCloseDate%2CshortUrl&api-key=" + apiKey;
     
-    
      $.getJSON(url,function(result){
         $('#newsList li').remove();
          news = result.response.results;
@@ -356,6 +357,81 @@ function getNewsList() {
         });
         $('#newsList').listview('refresh');
      });
+}
+
+//----------------------   TWITTER  -----------------------------//
+
+$('#tweetsListPage').live('pageshow', function(event) {
+	getTweets("test");
+}); 
+
+function getTweets(twitterAcc) {
+    
+    
+    //var twitter_api_url = 'http://search.twitter.com/search.json';
+    var twitter_user  = 'tweetminster';
+    var twitter_api_url = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=" + twitter_user + "&count=10"
+    var query = 'select * from twitter.statuses.user_timeline where screen_name="' + twitter_user + '"';
+    //twitter.statuses.user_timeline
+    
+    var consumer_key="08ZNcNfdoCgYTzR7qcW1HQ";
+    var consumer_secret="PTMIdmhxAavwarH3r4aTnVF7iYbX6BRfykNBHIaB8" ;
+    var access_token="1181240586-JIgvJe4ev3NHdHnAqnovHINWfpo0qB2S2kZtVRI" ;
+    var access_token_secret="1nodv0LBsi7jS93e38KiW8cHOA5iUc6FT4L6De7kgk";
+    
+    query = query + ' AND consumer_key="' + consumer_key + '" AND consumer_secret="' + consumer_secret + '" AND access_token="' + access_token + '" AND access_token_secret="' + access_token_secret + '"';
+    
+    var dataString = {
+        q: query,
+        diagnostics: false,
+        format: 'json',
+        env: 'store://tucksoftware.co.uk/tymp_twitter_auth_4'
+    };
+
+    // Enable caching
+    $.ajaxSetup({ cache: true });
+    
+    /*
+    $.ajax({
+        url: 'https://query.yahooapis.com/v1/public/yql',
+        data: dataString,
+        success: function(data) {
+            $('#tweetsList').html(JSON.stringify(data, undefined, 2));
+        }
+    });
+    
+    */ 
+   
+    $.getJSON(
+        //'https://query.yahooapis.com/v1/public/yql',
+        //dataString,
+        "http://winterbourn.co.uk/twitter-api/twitter-auth.php?url='+encodeURIComponent('statuses/user_timeline.json?screen_name=tweetminster0&count=2)",
+        function(data) {
+          $.each(data.query.results.result, function(i, tweet) {
+
+            if(tweet.text !== undefined) {
+              // Calculate how many hours ago was the tweet posted
+              var date_tweet = new Date(tweet.created_at);
+              var date_now   = new Date();
+              var date_diff  = date_now - date_tweet;
+              var hours      = Math.round(date_diff/(1000*60*60));
+
+              // Build the html string for the current tweet
+              var tweet_html = '<div class="tweet_text">';
+              tweet_html    += '<a href="http://www.twitter.com/';
+              tweet_html    += twitter_user + '/status/' + tweet.id + '">';
+              tweet_html    += tweet.text + '<\/a><\/div>';
+              tweet_html    += '<div class="tweet_hours">' + hours;
+              tweet_html    += ' hours ago<\/div>';
+    
+              // Append html string to tweet_container div
+              $('#tweetsList').append(tweet_html);
+            }
+          });
+        }
+    )
+*/
+    
 }
 
 
