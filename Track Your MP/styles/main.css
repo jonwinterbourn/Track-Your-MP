@@ -109,3 +109,14 @@ div#mpPortrait {
     float:left;
     width:25%;
 }
+
+li.tweet_text div.ui-btn-inner div.ui-btn-text a
+{
+    white-space:normal;
+    font-size:0.8em;
+}
+
+span.tweet_hours {
+    font-size:0.8em;
+    padding:0.6em 1.2em;
+}

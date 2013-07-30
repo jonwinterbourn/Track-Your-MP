@@ -369,7 +369,9 @@ function getTweets(twitterAcc) {
     
     
     //var twitter_api_url = 'http://search.twitter.com/search.json';
-    var twitter_user  = 'tweetminster';
+    var twitter_user  = 'sajidjavid';
+    
+    /*
     var twitter_api_url = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=" + twitter_user + "&count=10"
     var query = 'select * from twitter.statuses.user_timeline where screen_name="' + twitter_user + '"';
     //twitter.statuses.user_timeline
@@ -387,50 +389,43 @@ function getTweets(twitterAcc) {
         format: 'json',
         env: 'store://tucksoftware.co.uk/tymp_twitter_auth_4'
     };
-
-    // Enable caching
-    $.ajaxSetup({ cache: true });
+      */
     
-    /*
-    $.ajax({
-        url: 'https://query.yahooapis.com/v1/public/yql',
-        data: dataString,
-        success: function(data) {
-            $('#tweetsList').html(JSON.stringify(data, undefined, 2));
-        }
-    });
-    
-    */ 
-   
     $.getJSON(
         //'https://query.yahooapis.com/v1/public/yql',
         //dataString,
-        "http://winterbourn.co.uk/twitter-api/twitter-auth.php?url='+encodeURIComponent('statuses/user_timeline.json?screen_name=tweetminster0&count=2)",
+        //"http://winterbourn.co.uk/twitter-api/twitter-auth.php?url='+encodeURIComponent('statuses/user_timeline.json?screen_name=tweetminster0&count=2)",
+        "http://winterbourn.co.uk/twitter-api/index.php?screenname=" + twitter_user,
         function(data) {
-          $.each(data.query.results.result, function(i, tweet) {
+            $('#tweetsList li').remove();
+            $.each(data, function(i, tweet) {
 
-            if(tweet.text !== undefined) {
-              // Calculate how many hours ago was the tweet posted
-              var date_tweet = new Date(tweet.created_at);
-              var date_now   = new Date();
-              var date_diff  = date_now - date_tweet;
-              var hours      = Math.round(date_diff/(1000*60*60));
-
-              // Build the html string for the current tweet
-              var tweet_html = '<div class="tweet_text">';
-              tweet_html    += '<a href="http://www.twitter.com/';
-              tweet_html    += twitter_user + '/status/' + tweet.id + '">';
-              tweet_html    += tweet.text + '<\/a><\/div>';
-              tweet_html    += '<div class="tweet_hours">' + hours;
-              tweet_html    += ' hours ago<\/div>';
+                if(tweet.text !== undefined) {
+                  // Calculate how many hours ago was the tweet posted
+                  var date_tweet = new Date(tweet.created_at);
+                  var date_now   = new Date();
+                  var date_diff  = date_now - date_tweet;
+                  var hours      = Math.round(date_diff/(1000*60*60));
     
-              // Append html string to tweet_container div
-              $('#tweetsList').append(tweet_html);
-            }
+                  // Build the html string for the current tweet
+                    //$('#tweetsList').append("<li data-role='list-divider'>Tweet</li>");
+                    //$('#tweetsList').append("<li>" + tweet.text + "</li>");
+                  var tweet_html = '<li class="tweet_text">';
+                  tweet_html    += '<a rel="external" href="http://www.twitter.com/';
+                  tweet_html    += twitter_user + '/status/' + tweet.id_str + '">';
+                  tweet_html    += tweet.text + '</a>';
+                  tweet_html    += '<span class="tweet_hours">' + hours;
+                  tweet_html    += ' hours ago<\/span>';
+                  tweet_html    += '</li>';
+        
+                  // Append html string to tweet_container div
+                  $('#tweetsList').append(tweet_html);
+                  $('#tweetsList').listview('refresh');
+                }
           });
         }
     )
-*/
+
     
 }
 
