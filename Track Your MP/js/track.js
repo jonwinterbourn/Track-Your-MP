@@ -158,6 +158,8 @@ localStorageApp.prototype = {
         xhr.send();
         
         setConstituencyIds(valueInputConst);
+        setTwitterName(valueInputId); 
+        
         
         //set content on home page
         $("h1#mpName").text(valueInputName);
@@ -173,10 +175,13 @@ localStorageApp.prototype = {
         $("h1#mpName").show();
         $("div.mpDetails").show();
         $("li#mpActivity").show();
+        $("li#mpNews").show();
+        $("li#mpTweets").show();
         //setTimeout($.mobile.changePage('#home'),1000);
         
         setTimeout("goHome()",1000);
         $.mobile.showPageLoadingMsg();
+        
     },
     
 	_getVariable:function() {
@@ -361,6 +366,31 @@ function getNewsList() {
 
 //----------------------   TWITTER  -----------------------------//
 
+function setTwitterName(mpId) {
+    
+    //https://spreadsheets.google.com/feeds/cells/0ApYRL5dnIg37dE0zeUdVaHg5Mlg4bGF2S3poSWR1R0E/1/public/basic?alt=json-in-script
+    var screenName;
+    //alert(mpId);
+    //var screenName = "sajidjavid";
+    //$.getJSON("https://spreadsheets.google.com/feeds/list/0ApYRL5dnIg37dE0zeUdVaHg5Mlg4bGF2S3poSWR1R0E/1/public/basic?alt=json-in-script", function(data) {
+    
+    $.getJSON("http://tucksoftware.co.uk/trackyourmp/mps.js", function(data) {
+        mps = data.commons.mps;
+        //alert(data);
+        $.each(mps, function(i, mp) {
+            
+            if (mp.person_id == mpId) {
+                screenName = mp.mp_twitter;
+                if (screenName !=null) {
+                    localStorage.setItem("twitterName", screenName);
+                }
+            }
+        });
+    });
+    
+    
+}
+
 $('#tweetsListPage').live('pageshow', function(event) {
 	getTweets("test");
 }); 
@@ -369,7 +399,7 @@ function getTweets(twitterAcc) {
     
     
     //var twitter_api_url = 'http://search.twitter.com/search.json';
-    var twitter_user  = 'sajidjavid';
+    var twitter_user  = localStorage.getItem("twitterName");
     
     /*
     var twitter_api_url = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=" + twitter_user + "&count=10"
