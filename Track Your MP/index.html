@@ -36,8 +36,8 @@
                     <li id="mpNews"><a id="mpNewsMenuLink" href="#newsListPage" data-transition="slide">MP in the news</a></li>
                     <li id="mpTweets"><a id="mpTweetsMenuLink" href="#tweetsListPage" data-transition="slide">MP on Twitter</a></li>
                     <li><a href="#page2" data-transition="slide">Find your MP</a></li>
-                    <li><a href="#settings" id="settingsMenuLink" data-transition="slide">Settings</a></li>
-                    <li><a href="#page3" id="aboutAppMenuLink" data-transition="slide">About this App</a></li>
+                    <li><a href="#settingsPage" id="settingsMenuLink" data-transition="slide">Settings</a></li>
+                    <li><a href="#aboutAppPage" id="aboutAppMenuLink" data-transition="slide">About this App</a></li>
                 </ul>
             </div>
             <div data-role="footer" data-position="fixed" data-id="oneFooter">
@@ -52,13 +52,7 @@
             <div data-role="content">
                 <ul id="activityList" data-role="listview">
                     
-                </ul> 
-                <!--
-                <div class="loadMore">
-                    <a href="#" data-inline="true" data-icon="plus" data-role="button" data-min="true" onClick="getMore();">Load more...</a>
-                    
-                </div>
-                -->
+                </ul>
             </div>
             <div data-role="footer" data-position="fixed" data-id="oneFooter">
                 <span class="footerText">Tuck Software</span>
@@ -74,6 +68,49 @@
                 <ul id="newsList" data-role="listview">
                     
                 </ul> 
+            </div>
+            <div data-role="footer" data-position="fixed" data-id="oneFooter">
+                <span class="footerText">Tuck Software</span>
+            </div>
+        </div>
+
+        <div data-role="page" id="settingsPage" data-add-back-btn="true">
+            <div data-role="header">
+                <h1>Settings</h1>
+            </div>
+            <div data-role="content">
+                <a href="#home" id="clearStorage" data-role="button" data-icon="delete" data-inline="true">Clear Storage/Reset MP data</a>
+            </div>
+            <div data-role="footer" data-position="fixed" data-id="oneFooter">
+                <span class="footerText">Tuck Software</span>
+            </div>
+        </div>
+        
+        <div data-role="page" id="aboutAppPage" data-add-back-btn="true">
+            <div data-role="header">
+                <h1>About this App</h1>
+            </div>
+            <div data-role="content">
+                 <h2 class="subHead">Track your MP</h2>
+                <p>The <strong>Track your MP</strong> app helps you identify the MP of an area and keep track of their activty 
+                   in the House of Commons, in the politics section of the news and on Twitter.</p>
+                <hr/>
+                <p><strong>Track your MP</strong> was created by <strong><a rel="external" href="http://tucksoftware.co.uk">Tuck Software</a></strong>, using the following software:</p>
+                <ul>
+                    <li>Icenium, based on Cordova</li>
+                    <li>JQuery and JQuery Mobile</li>
+                    
+                </ul>
+                <p>And the following data sources:</p>
+                <ul>
+                    <li>They Work for You API</li>
+                    <li><a rel="external" href="http://explorer.content.guardianapis.com/">Guardian Open Platform: Content API</a></li>
+                    <li>Twitter API</li>
+                    <li>Google Map API</li>
+
+                </ul>
+                <hr/>
+                <p>Should you find any errors or discover innaccurate information, please email us at <a href="mailto:tucksoftware@gmail.com">tucksoftware@gmail.com</a> so that we can fix it. </p>                
             </div>
             <div data-role="footer" data-position="fixed" data-id="oneFooter">
                 <span class="footerText">Tuck Software</span>
@@ -137,7 +174,7 @@
                 <div id="navgroup">
                     <div data-role="controlgroup" data-type="horizontal">
                     <a href="#" id="saveMP" data-inline="true" data-icon="plus" data-role="button">Save</a>
-                    <a href="index.html" id="clearMP" data-role="button" data-icon="delete" data-inline="true">Clear</a>
+                    <a href="#" id="clearMP" data-role="button" data-icon="delete" data-inline="true">Clear</a>
                     </div>
                 </div>
                 

@@ -9,10 +9,10 @@ function onDeviceReady() {
 
     //disable unused links til needed
     //$('a#mpActivityMenuLink').addClass('ui-disabled');
-    $('a#aboutAppMenuLink').addClass('ui-disabled');
+    //$('a#aboutAppMenuLink').addClass('ui-disabled');
     //$('a#mpNewsMenuLink').addClass('ui-disabled');
     //$('a#mpTweetsMenuLink').addClass('ui-disabled');
-    $('a#settingsMenuLink').addClass('ui-disabled');
+    //$('a#settingsMenuLink').addClass('ui-disabled');
     
     //add local storage
     localStorageApp = new localStorageApp();
@@ -36,10 +36,9 @@ function onDeviceReady() {
     {
         okMP();
     }
-    
-    
- 
+         
 }
+
 
 function noMP() {
         $("h1#nomp").show();
@@ -52,11 +51,14 @@ function noMP() {
 
 function okMP() {
     $("h1#nomp").hide();
-        $("h1#mpName").show();
-        $("div.mpDetails").show();
-        $("li#mpActivity").show();
+    $("h1#mpName").show();
+    $("div.mpDetails").show();
+    $("li#mpActivity").show();
     $("li#mpNews").show();
-        $("li#mpTweets").show();
+    $("li#mpTweets").show();
+    if (localStorage.getItem("twitterName")==null || localStorage.getItem("twitterName").length < 2) {
+        $('a#mpTweetsMenuLink').addClass('ui-disabled');        
+    }
     
     //set name & details
     $("h1#mpName").text(localStorage.getItem("mpName"));
@@ -101,9 +103,13 @@ localStorageApp.prototype = {
 		});
 
 		document.getElementById("clearMP").addEventListener("click", function() {
-			that._clearLocalStorage.apply(that, arguments);
+			//that._clearLocalStorage.apply(that, arguments);
+            clearFindMpForms();
 		});
         
+        document.getElementById("clearStorage").addEventListener("click", function() {
+			that._clearLocalStorage.apply(that, arguments);
+		});
 	},
     
     
@@ -158,9 +164,8 @@ localStorageApp.prototype = {
         xhr.send();
         
         setConstituencyIds(valueInputConst);
-        setTwitterName(valueInputId); 
-        
-        
+        var twitterAccount = setTwitterName(valueInputId); 
+
         //set content on home page
         $("h1#mpName").text(valueInputName);
         $("div#mpConstituency").text("Constituency: " + valueInputConst);
@@ -177,8 +182,18 @@ localStorageApp.prototype = {
         $("li#mpActivity").show();
         $("li#mpNews").show();
         $("li#mpTweets").show();
-        //setTimeout($.mobile.changePage('#home'),1000);
         
+        /*
+        if (twitterAccount) {
+            $('a#mpTweetsMenuLink').removeClass('ui-disabled');
+        }
+        else {
+            $('a#mpTweetsMenuLink').addClass('ui-disabled');
+        }
+        */
+        
+        //setTimeout($.mobile.changePage('#home'),1000);
+        $('ul#homeMenu').listview('refresh');
         setTimeout("goHome()",1000);
         $.mobile.showPageLoadingMsg();
         
@@ -211,6 +226,19 @@ localStorageApp.prototype = {
 		localStorage.clear();
         noMP();
 	}
+}
+
+function clearFindMpForms() {
+    $('#foundMP').html('<span class="defaultText">No MP yet selected. Please perform a search.</span>');
+    $('#postCode').val('');
+    $('#mpNameValue').val('');
+    $('#mpConstValue').val('');
+    $('#mpPartyValue').val('');
+    $('#mpIdValue').val('');
+    $('#enteredHouse').val('');
+    $('#mpImage').val('');
+    $('#member_id').val('');
+    $('#mp_portrait').val('');    
 }
 
 function goHome(){
@@ -267,8 +295,6 @@ function findMPFromGeo() {
         }
         
     });
-    
-    
     
 }
 
@@ -346,16 +372,19 @@ $('#newsListPage').live('pageshow', function(event) {
 function getNewsList() {
 
     name = localStorage.getItem("mpName");
-    url = "http://content.guardianapis.com/search?q=" + name + "&format=json&show-fields=trailText%2Cheadline%2Cscore%2Ccommentable%2CcommentCloseDate%2CshortUrl&api-key=" + apiKey;
+    section = "politics";
+    url = "http://content.guardianapis.com/search?q=" + name + "&format=json&show-fields=trailText%2Cheadline%2Cscore%2Ccommentable%2CcommentCloseDate%2CshortUrl&api-key=" + apiKey + "&section=" + section;
     
      $.getJSON(url,function(result){
         $('#newsList li').remove();
          news = result.response.results;
         $.each(news, function(index, item){
             newsHeadline =  item.fields.headline;
-            newsTrail = item.fields.trailText;
+            newsTrail = item.fields.trailText.replace("<p>", "");
+            //alert(newsTrail);
             newsUrl = item.fields.shortUrl;
-            newsDateStr = item.webPublicationDate;
+            newsDate = new Date(item.webPublicationDate);
+            newsDateStr = newsDate.toDateString();
             $('#newsList').append("<li data-role='list-divider'>" + newsHeadline + "</li>");
             $('#newsList').append("<li class='newsTrail'><span clas='datestr'>"+ newsDateStr + "</span><br/>" + newsTrail + "</li>");
             $('#newsList').append("<li><a rel='external' href='" + newsUrl + "' data-role='button' data-icon='arrow-r'>Read article...</a></li>");
@@ -381,9 +410,18 @@ function setTwitterName(mpId) {
             
             if (mp.person_id == mpId) {
                 screenName = mp.mp_twitter;
-                if (screenName !=null) {
-                    localStorage.setItem("twitterName", screenName);
+                localStorage.setItem("twitterName", screenName);
+                if (screenName !=null && screenName.length>1) {
+                    console.log('twitter account available');
+                    $('a#mpTweetsMenuLink').removeClass('ui-disabled');
+                    return true;
                 }
+                else {
+                    console.log('twitter account not available');
+                    $('a#mpTweetsMenuLink').addClass('ui-disabled');
+                    return false;
+                }
+               
             }
         });
     });
@@ -431,21 +469,36 @@ function getTweets(twitterAcc) {
             $.each(data, function(i, tweet) {
 
                 if(tweet.text !== undefined) {
-                  // Calculate how many hours ago was the tweet posted
+                  // Calculate how many hours/days ago was the tweet posted
                   var date_tweet = new Date(tweet.created_at);
                   var date_now   = new Date();
                   var date_diff  = date_now - date_tweet;
                   var hours      = Math.round(date_diff/(1000*60*60));
-    
+                  var days = 0;
+                  var timeStr = '';
+                  if (hours>=24) {
+                        days =Math.round(hours/24);
+                        var dayUnit = "day";
+                        if (days>1) {
+                            dayUnit = "days";
+                        }
+                        timeStr = '<span class="tweet_days">' + days + ' ' + dayUnit + ' ago<\/span>';
+                  }
+                  else {
+                        var hourUnit = "hour";
+                        if (hours>1) {
+                            hourUnit = "hours";
+                        }
+                        timeStr = '<span class="tweet_hours">' + hours + ' ' + hourUnit + ' ago<\/span>';
+                  }
+                  
+                  
                   // Build the html string for the current tweet
-                    //$('#tweetsList').append("<li data-role='list-divider'>Tweet</li>");
-                    //$('#tweetsList').append("<li>" + tweet.text + "</li>");
                   var tweet_html = '<li class="tweet_text">';
                   tweet_html    += '<a rel="external" href="http://www.twitter.com/';
                   tweet_html    += twitter_user + '/status/' + tweet.id_str + '">';
                   tweet_html    += tweet.text + '</a>';
-                  tweet_html    += '<span class="tweet_hours">' + hours;
-                  tweet_html    += ' hours ago<\/span>';
+                  tweet_html    += timeStr;
                   tweet_html    += '</li>';
         
                   // Append html string to tweet_container div

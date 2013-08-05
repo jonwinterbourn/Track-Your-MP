@@ -116,7 +116,15 @@ li.tweet_text div.ui-btn-inner div.ui-btn-text a
     font-size:0.8em;
 }
 
-span.tweet_hours {
+span.tweet_hours,
+span.tweet_days {
     font-size:0.8em;
     padding:0.6em 1.2em;
+}
+
+h2.subHead {
+    padding: 0px;
+    margin: 0px;
+    font-size: 1.2em;
+    text-align: center;
 }
