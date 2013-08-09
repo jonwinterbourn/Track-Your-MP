@@ -463,8 +463,8 @@ function getTweets(twitterAcc) {
         //'https://query.yahooapis.com/v1/public/yql',
         //dataString,
         //"http://winterbourn.co.uk/twitter-api/twitter-auth.php?url='+encodeURIComponent('statuses/user_timeline.json?screen_name=tweetminster0&count=2)",
-        "http://winterbourn.co.uk/twitter-api/index.php?screenname=" + twitter_user,
-        //"http://tucksoftware.co.uk/twitter-api/index.php?screenname=" + twitter_user,
+        //"http://winterbourn.co.uk/twitter-api/index.php?screenname=" + twitter_user,
+        "http://tucksoftware.co.uk/twitter-api/index.php?screenname=" + twitter_user,
         function(data) {
             $('#tweetsList li').remove();
             $.each(data, function(i, tweet) {
