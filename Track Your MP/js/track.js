@@ -7,26 +7,11 @@ function onDeviceReady() {
     getLocation();
     navigator.splashscreen.hide();
 
-    //disable unused links til needed
-    //$('a#mpActivityMenuLink').addClass('ui-disabled');
-    //$('a#aboutAppMenuLink').addClass('ui-disabled');
-    //$('a#mpNewsMenuLink').addClass('ui-disabled');
-    //$('a#mpTweetsMenuLink').addClass('ui-disabled');
-    //$('a#settingsMenuLink').addClass('ui-disabled');
-    
+       
     //add local storage
     localStorageApp = new localStorageApp();
 	localStorageApp.run();
     
-    //test
-    if (window.File && window.FileReader && window.FileList && window.Blob) {
-        // Great success! All the File APIs are supported.
-    
-        //alert("all ok");
-    } else {
-        alert('The File APIs are not fully supported in this browser.');
-    }
-
     mpSet = check4MP();
     
     if (!mpSet) {
@@ -103,7 +88,6 @@ localStorageApp.prototype = {
 		});
 
 		document.getElementById("clearMP").addEventListener("click", function() {
-			//that._clearLocalStorage.apply(that, arguments);
             clearFindMpForms();
 		});
         
@@ -123,10 +107,7 @@ localStorageApp.prototype = {
         valueInputImage = $("#mpImage").val();
         valueInputEntered = $("#enteredHouse").val();
         fullImgUrl = "http://www.theyworkforyou.com" + valueInputImage;
-        //alert(valueInput);
 
-        //TODO : need to clear storage if already existant
-        
         localStorage.setItem("mpName", valueInputName);
         localStorage.setItem("mpConstituency", valueInputConst);
         localStorage.setItem("mpParty", valueInputParty);
@@ -164,7 +145,6 @@ localStorageApp.prototype = {
         xhr.send();
         
         setConstituencyIds(valueInputConst);
-        var twitterAccount = setTwitterName(valueInputId); 
 
         //set content on home page
         $("h1#mpName").text(valueInputName);
@@ -183,16 +163,6 @@ localStorageApp.prototype = {
         $("li#mpNews").show();
         $("li#mpTweets").show();
         
-        /*
-        if (twitterAccount) {
-            $('a#mpTweetsMenuLink').removeClass('ui-disabled');
-        }
-        else {
-            $('a#mpTweetsMenuLink').addClass('ui-disabled');
-        }
-        */
-        
-        //setTimeout($.mobile.changePage('#home'),1000);
         $('ul#homeMenu').listview('refresh');
         setTimeout("goHome()",1000);
         $.mobile.showPageLoadingMsg();
@@ -282,7 +252,6 @@ function findMPFromPostCode() {
 
 function findMPFromGeo() {
     var geoText = document.getElementById('geoPostCode').innerHTML.replace(" ","");
-    var fullname;  
     $.getJSON('http://www.theyworkforyou.com/api/getMP?key=GAbXxUAuN3ggAwJjTnEEje9K&postcode=' + geoText,function(result){
     
         if (result.person_id !=null) {
@@ -347,7 +316,6 @@ function onGeolocationSuccess(position) {
     });
     
     // Use Google API to get a map of the current location
-    // http://maps.googleapis.com/maps/api/staticmap?size=280x300&maptype=hybrid&zoom=16&markers=size:mid%7Ccolor:red%7C42.375022,-71.273729&sensor=true
     var googleApis_map_Url = 'http://maps.googleapis.com/maps/api/staticmap?size=300x300&maptype=hybrid&zoom=16&sensor=true&markers=size:mid%7Ccolor:red%7C' + latlng;
     var mapImg = '<img src="' + googleApis_map_Url + '" />';
     $("#map_canvas").html(mapImg);
@@ -360,8 +328,6 @@ function onGeolocationError(error) {
 
 //----------------------    NEWS    -----------------------------//
 
-//http://content.guardianapis.com/search?q=dominic+grieve&format=json&api-key=3ktbtu9pmqpsbkbgdvq4jnbv
-//http://content.guardianapis.com/search?q=dominic+grieve&format=json&show-fields=trailText%2Cheadline%2Cscore%2Ccommentable%2CcommentCloseDate%2CshortUrl&api-key=3ktbtu9pmqpsbkbgdvq4jnbv
 var apiKey = "3ktbtu9pmqpsbkbgdvq4jnbv";
 var news;
 
@@ -397,15 +363,9 @@ function getNewsList() {
 
 function setTwitterName(mpId) {
     
-    //https://spreadsheets.google.com/feeds/cells/0ApYRL5dnIg37dE0zeUdVaHg5Mlg4bGF2S3poSWR1R0E/1/public/basic?alt=json-in-script
     var screenName;
-    //alert(mpId);
-    //var screenName = "sajidjavid";
-    //$.getJSON("https://spreadsheets.google.com/feeds/list/0ApYRL5dnIg37dE0zeUdVaHg5Mlg4bGF2S3poSWR1R0E/1/public/basic?alt=json-in-script", function(data) {
-    
     $.getJSON("http://tucksoftware.co.uk/trackyourmp/mps.js", function(data) {
         mps = data.commons.mps;
-        //alert(data);
         $.each(mps, function(i, mp) {
             
             if (mp.person_id == mpId) {
@@ -436,34 +396,9 @@ $('#tweetsListPage').live('pageshow', function(event) {
 function getTweets(twitterAcc) {
     
     
-    //var twitter_api_url = 'http://search.twitter.com/search.json';
     var twitter_user  = localStorage.getItem("twitterName");
     
-    /*
-    var twitter_api_url = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=" + twitter_user + "&count=10"
-    var query = 'select * from twitter.statuses.user_timeline where screen_name="' + twitter_user + '"';
-    //twitter.statuses.user_timeline
-    
-    var consumer_key="08ZNcNfdoCgYTzR7qcW1HQ";
-    var consumer_secret="PTMIdmhxAavwarH3r4aTnVF7iYbX6BRfykNBHIaB8" ;
-    var access_token="1181240586-JIgvJe4ev3NHdHnAqnovHINWfpo0qB2S2kZtVRI" ;
-    var access_token_secret="1nodv0LBsi7jS93e38KiW8cHOA5iUc6FT4L6De7kgk";
-    
-    query = query + ' AND consumer_key="' + consumer_key + '" AND consumer_secret="' + consumer_secret + '" AND access_token="' + access_token + '" AND access_token_secret="' + access_token_secret + '"';
-    
-    var dataString = {
-        q: query,
-        diagnostics: false,
-        format: 'json',
-        env: 'store://tucksoftware.co.uk/tymp_twitter_auth_4'
-    };
-      */
-    
     $.getJSON(
-        //'https://query.yahooapis.com/v1/public/yql',
-        //dataString,
-        //"http://winterbourn.co.uk/twitter-api/twitter-auth.php?url='+encodeURIComponent('statuses/user_timeline.json?screen_name=tweetminster0&count=2)",
-        //"http://winterbourn.co.uk/twitter-api/index.php?screenname=" + twitter_user,
         "http://tucksoftware.co.uk/twitter-api/index.php?screenname=" + twitter_user,
         function(data) {
             $('#tweetsList li').remove();
@@ -525,7 +460,6 @@ $('#activityListPage').live('pageshow', function(event) {
 function getActivityList() {
 
     id = localStorage.getItem("mpId");
-    //alert(id);
     moreUrlPrefix = "http://www.theyworkforyou.com";
     url = 'http://www.theyworkforyou.com/api/getHansard?key=GAbXxUAuN3ggAwJjTnEEje9K&person=' + id + '&num=10&order=d';
     
@@ -558,30 +492,12 @@ function openHansardURL(url) {
 
 function getAristotleIdFromPoliticsApi(guardian_constituency_id) {
     
-    url = "http://www.guardian.co.uk/politics/api/general-election/2010/results/json";
     url= "http://www.guardian.co.uk/politics/api/constituency/" + guardian_constituency_id + "/json/"
     $.getJSON(url, function(data){
         results = data.results;
         $.each(results, function(index, result) {
            alert(result.winning-mp.name); 
         });
-        /*
-        $.each(activities, function(index, activity){
-            activHeader =  activity.parent.body;
-            activExtract = activity.extract;
-            activUrl = activity.listurl;
-            if (activity.htime != null) {
-                activDateStr = activity.hdate + " " + activity.htime;  
-            }
-            else {
-                activDateStr = activity.hdate;
-            }
-            $('#activityList').append("<li data-role='list-divider'>" + activHeader + "</li>");
-            $('#activityList').append("<li class='activityExtract'><span clas='datestr'>"+ activDateStr + "</span><br/>" + activExtract + "</li>");
-            $('#activityList').append("<li><a rel='external' href='" + moreUrlPrefix + activUrl + "' data-role='button' data-icon='arrow-r'>Read more...</a></li>");
-        });
-        $('#activityList').listview('refresh');
-        */
      });
         
 }
