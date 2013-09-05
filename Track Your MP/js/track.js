@@ -145,7 +145,8 @@ localStorageApp.prototype = {
         xhr.send();
         
         setConstituencyIds(valueInputConst);
-
+        setTwitterName(valueInputId); 
+        
         //set content on home page
         $("h1#mpName").text(valueInputName);
         $("div#mpConstituency").text("Constituency: " + valueInputConst);
