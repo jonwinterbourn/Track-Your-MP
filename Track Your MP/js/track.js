@@ -6,7 +6,6 @@ document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady() {
     getLocation();
     navigator.splashscreen.hide();
-
        
     //add local storage
     localStorageApp = new localStorageApp();
@@ -502,4 +501,8 @@ function getAristotleIdFromPoliticsApi(guardian_constituency_id) {
      });
         
 }
+
+function openTestPage() {
+     $.mobile.changePage( "test.html", { transition: "slide"} );
+    }
 
