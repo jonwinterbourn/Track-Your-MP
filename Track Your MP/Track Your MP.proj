@@ -3,7 +3,7 @@
   <PropertyGroup>
     <ProjectGuid>9f750762-0b75-4c4a-869b-27747991e42b</ProjectGuid>
     <ProjectTypeGuids>{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}</ProjectTypeGuids>
-    <AppIdentifier>com.telerik.TrackYourMP</AppIdentifier>
+    <AppIdentifier>uk.co.tucksoftware.m.TrackYourMP</AppIdentifier>
     <ProjectName>Track Your MP</ProjectName>
     <IsRunnable>true</IsRunnable>
     <TemplateAppName>Cordova270</TemplateAppName>
@@ -11,7 +11,7 @@
     <DeviceOrientations>Portrait;Landscape</DeviceOrientations>
     <iOSStatusBarStyle>Default</iOSStatusBarStyle>
     <AndroidHardwareAcceleration>false</AndroidHardwareAcceleration>
-    <BundleVersion>1.6</BundleVersion>
+    <BundleVersion>1.9</BundleVersion>
     <iOSDisplayName />
     <iOSDeviceFamily>1;2</iOSDeviceFamily>
     <iOSBackgroundMode />
