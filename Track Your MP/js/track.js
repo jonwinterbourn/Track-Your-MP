@@ -20,6 +20,10 @@ function onDeviceReady() {
     {
         okMP();
     }
+    
+    $("#foundMP").change(function() {
+        $(this).find(".yft_fade").show().fadeOut();
+    });
          
 }
 
@@ -239,7 +243,9 @@ function findMPFromPostCode() {
      $.getJSON('http://www.theyworkforyou.com/api/getMP?key=GAbXxUAuN3ggAwJjTnEEje9K&postcode=' + inputText.value,function(result){
         
         if (result.person_id !=null) {
-            $('#foundMP').html("<span class='mp' id='" + result.person_id + "'>You have selected:<br/> " + result.full_name + ", " + result.party + " MP for the " + result.constituency + " constituency. </span> ");
+            //$('#foundMP').html("<span class='mp' id='" + result.person_id + "'>" + result.full_name + ", " + result.party + " MP for the " + result.constituency + " constituency. </span> <span class='mpImage'><img src='http://www.theyworkforyou.com" + result.image + "'/></span>");
+            $('#foundMP').html('<div class="ui-grid-b mp" id="' + result.person_id + '"><div class="ui-block-a" style="width:66%">' + result.full_name + ', ' + result.party + ' MP for the ' + result.constituency + ' constituency.</div><div class="ui-block-b mpImage"><img src="http://www.theyworkforyou.com' + result.image + '"/></div></div>');
+            //$('#foundMP').addClass("highlightDiv");
             setHiddenFields(result); 
         }
         else {
@@ -255,7 +261,8 @@ function findMPFromGeo() {
     $.getJSON('http://www.theyworkforyou.com/api/getMP?key=GAbXxUAuN3ggAwJjTnEEje9K&postcode=' + geoText,function(result){
     
         if (result.person_id !=null) {
-            $('#foundMP').html("<span class='mp' id='" + result.person_id + "'>You have selected:<br/> " + result.full_name + ", " + result.party + " MP for the " + result.constituency + " constituency. </span> ");
+            //$('#foundMP').html("<span class='mp' id='" + result.person_id + "'>You have selected:<br/> " + result.full_name + ", " + result.party + " MP for the " + result.constituency + " constituency. </span> ");
+            $('#foundMP').html('<div class="ui-grid-b mp" id="' + result.person_id + '"><div class="ui-block-a" style="width:66%">' + result.full_name + ', ' + result.party + ' MP for the ' + result.constituency + ' constituency.</div><div class="ui-block-b mpImage"><img src="http://www.theyworkforyou.com' + result.image + '"/></div></div>');
             setHiddenFields(result);
             fullname = result.full_name;
         }
@@ -332,6 +339,7 @@ var apiKey = "3ktbtu9pmqpsbkbgdvq4jnbv";
 var news;
 
 $('#newsListPage').live('pageshow', function(event) {
+    $.mobile.showPageLoadingMsg();
 	getNewsList();
 }); 
 
@@ -357,6 +365,7 @@ function getNewsList() {
         });
         $('#newsList').listview('refresh');
      });
+    $.mobile.hidePageLoadingMsg();
 }
 
 //----------------------   TWITTER  -----------------------------//
