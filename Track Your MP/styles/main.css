@@ -33,8 +33,8 @@ h1#mpName {
 
 
 .searchZone {
-    margin:0px;
-    margin-bottom:1em;
+    margin:1em 0;
+    
     border:1px solid #CCC;
     /*padding: 1em 0.5em;*/
     /*padding-top:1em;*/
@@ -149,6 +149,7 @@ activityListPage
 #home div.ui-content {
     
     background-color: #f9f9f9;
+    padding: 15px 15px 0 15px;
 }
 
 /* green theme */
@@ -218,3 +219,7 @@ div.mpImage img {
     margin: 1px auto; 
 }
 /* effect("highlight", {color:"#FAC905"}, 1000); rgba(250, 201, 5, 1) rgba(0,0,0,.1)  */
+
+#nompHelp .ui-btn-inner {
+    padding-left: 14px;
+}

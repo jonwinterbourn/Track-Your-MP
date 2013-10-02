@@ -20,6 +20,15 @@
             </div>
             <div data-role="content">
                 <h1 id="nomp">No MP Selected</h1>
+                <div id="nompHelp" data-role="collapsible" data-inset="false" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d" data-iconpos="right">
+                    <h3>Help</h3>
+                    To select an MP:
+                    <ol>
+                        <li>Click 'Find an Mp'</li>
+                        <li>Search by current location or by postcode</li>
+                        <li>Click 'Select MP'</li>
+                    </ol>
+                </div>
                 <h1 id="mpName">MP Name</h1>
                 <div class="mpDetails">
                     <div id="mpPortrait"></div>
@@ -76,7 +85,7 @@
                 <h1>Settings</h1>
             </div>
             <div data-role="content">
-                <a href="#home" id="clearStorage" data-role="button" data-icon="delete" data-inline="true">Clear Storage/Reset MP data</a>
+                <a href="#home" id="clearStorage" data-role="button" data-icon="delete" data-inline="true">Clear currently selected MP</a>
             </div>
             <div data-role="footer" data-position="fixed" data-id="oneFooter">
                 <span class="footerText">Tuck Software</span>
@@ -135,11 +144,11 @@
             </div>
             <div data-role="content">
         
-                <h2 class="mpSelected">MP selected:</h2> 
+                <h2 class="mpSelected">You have found:</h2> 
                     <div id="foundMP">
                         <span class="defaultText">No MP yet selected. Please perform a search.</span>
                         <span class="noMPFound">Unable to get MP for this constituency. Please check any postcode you may have entered and your network connection and try again.</span>
-                    </div>:
+                    </div>
                 <input type="hidden" id="mpNameValue" class="inputBox" />
                 <input type="hidden" id="mpConstValue" class="inputBox" />
                 <input type="hidden" id="mpPartyValue" class="inputBox" />
@@ -171,7 +180,7 @@
                 
                 <div id="navgroup">
                     <div data-role="controlgroup" data-type="horizontal">
-                    <a href="#" data-theme="g" id="saveMP" data-inline="true" data-icon="plus" data-role="button">Save</a>
+                    <a href="#" data-theme="g" id="saveMP" data-inline="true" data-icon="plus" data-role="button">Select MP</a>
                     <a href="#" id="clearMP" data-role="button" data-icon="delete" data-inline="true">Clear</a>
                     </div>
                 </div>

@@ -30,6 +30,7 @@ function onDeviceReady() {
 
 function noMP() {
         $("h1#nomp").show();
+        $("div#nompHelp").show();
         $("h1#mpName").hide();
         $("div.mpDetails").hide();
         $("li#mpActivity").hide();
@@ -39,6 +40,7 @@ function noMP() {
 
 function okMP() {
     $("h1#nomp").hide();
+    $("div#nompHelp").hide();
     $("h1#mpName").show();
     $("div.mpDetails").show();
     $("li#mpActivity").show();
@@ -161,6 +163,7 @@ localStorageApp.prototype = {
         portrait.html(mpImg);
         
         $("h1#nomp").hide();
+        $("div#nompHelp").hide();
         $("h1#mpName").show();
         $("div.mpDetails").show();
         $("li#mpActivity").show();
@@ -339,12 +342,12 @@ var apiKey = "3ktbtu9pmqpsbkbgdvq4jnbv";
 var news;
 
 $('#newsListPage').live('pageshow', function(event) {
-    $.mobile.showPageLoadingMsg();
+    
 	getNewsList();
 }); 
 
 function getNewsList() {
-
+    $.mobile.showPageLoadingMsg("a", "Loading new items...");    
     name = localStorage.getItem("mpName");
     section = "politics";
     url = "http://content.guardianapis.com/search?q=" + name + "&format=json&show-fields=trailText%2Cheadline%2Cscore%2Ccommentable%2CcommentCloseDate%2CshortUrl&api-key=" + apiKey + "&section=" + section;
@@ -363,9 +366,10 @@ function getNewsList() {
             $('#newsList').append("<li class='newsTrail'><span clas='datestr'>"+ newsDateStr + "</span><br/>" + newsTrail + "</li>");
             $('#newsList').append("<li><a rel='external' href='" + newsUrl + "' data-role='button' data-icon='arrow-r'>Read article...</a></li>");
         });
+        $.mobile.hidePageLoadingMsg();
         $('#newsList').listview('refresh');
      });
-    $.mobile.hidePageLoadingMsg();
+    
 }
 
 //----------------------   TWITTER  -----------------------------//
@@ -399,12 +403,13 @@ function setTwitterName(mpId) {
 }
 
 $('#tweetsListPage').live('pageshow', function(event) {
+    
 	getTweets("test");
 }); 
 
 function getTweets(twitterAcc) {
     
-    
+    $.mobile.showPageLoadingMsg("a", "Loading tweets...");    
     var twitter_user  = localStorage.getItem("twitterName");
     
     $.getJSON(
@@ -451,10 +456,10 @@ function getTweets(twitterAcc) {
                   $('#tweetsList').listview('refresh');
                 }
           });
+            $.mobile.hidePageLoadingMsg();
         }
     )
-
-    
+        
 }
 
 
@@ -468,6 +473,7 @@ $('#activityListPage').live('pageshow', function(event) {
 
 function getActivityList() {
 
+    $.mobile.showPageLoadingMsg("a", "Loading activity...");
     id = localStorage.getItem("mpId");
     moreUrlPrefix = "http://www.theyworkforyou.com";
     url = 'http://www.theyworkforyou.com/api/getHansard?key=GAbXxUAuN3ggAwJjTnEEje9K&person=' + id + '&num=10&order=d';
@@ -489,6 +495,7 @@ function getActivityList() {
             $('#activityList').append("<li class='activityExtract'><span clas='datestr'>"+ activDateStr + "</span><br/>" + activExtract + "</li>");
             $('#activityList').append("<li><a rel='external' href='" + moreUrlPrefix + activUrl + "' data-role='button' data-icon='arrow-r'>Read more...</a></li>");
         });
+        $.mobile.hidePageLoadingMsg();
         $('#activityList').listview('refresh');
      });
 }
