@@ -18,8 +18,13 @@
             <div data-role="header">
                 <h1>Track Your MP</h1>
             </div>
+            <div class="offlineMessage warning message" data-transition="slidedown">
+                    <h3>No network found</h3>
+                    <p>This app depends on network availability. Please check network connection and try again.</p>
+            </div>
             <div data-role="content">
                 <h1 id="nomp">No MP Selected</h1>
+                
                 <div id="nompHelp" data-role="collapsible" data-inset="false" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d" data-iconpos="right">
                     <h3>Help</h3>
                     To select an MP:

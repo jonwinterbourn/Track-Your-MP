@@ -4,6 +4,25 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
 // PhoneGap is ready
 function onDeviceReady() {
+    
+    
+    window.addEventListener("offline", function() {
+        
+        $(".offlineMessage").show();//animate({top:"0"}, 500);
+    });
+    window.addEventListener("online", function() {
+        $(".offlineMessage").hide();
+    });
+    
+    
+    if (navigator.onLine) {
+      $(".offlineMessage").hide();
+    } else {
+      $(".offlineMessage").show();//animate({top:"0"}, 500);
+    }
+    
+    
+    
     getLocation();
     navigator.splashscreen.hide();
        
@@ -25,6 +44,7 @@ function onDeviceReady() {
         $(this).find(".yft_fade").show().fadeOut();
     });
          
+     
 }
 
 
