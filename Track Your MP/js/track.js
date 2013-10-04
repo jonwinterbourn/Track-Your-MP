@@ -367,7 +367,7 @@ $('#newsListPage').live('pageshow', function(event) {
 }); 
 
 function getNewsList() {
-    $.mobile.showPageLoadingMsg("a", "Loading new items...");    
+    $.mobile.showPageLoadingMsg();    
     name = localStorage.getItem("mpName");
     section = "politics";
     url = "http://content.guardianapis.com/search?q=" + name + "&format=json&show-fields=trailText%2Cheadline%2Cscore%2Ccommentable%2CcommentCloseDate%2CshortUrl&api-key=" + apiKey + "&section=" + section;
@@ -429,7 +429,7 @@ $('#tweetsListPage').live('pageshow', function(event) {
 
 function getTweets(twitterAcc) {
     
-    $.mobile.showPageLoadingMsg("a", "Loading tweets...");    
+    $.mobile.showPageLoadingMsg();    
     var twitter_user  = localStorage.getItem("twitterName");
     
     $.getJSON(
@@ -493,7 +493,7 @@ $('#activityListPage').live('pageshow', function(event) {
 
 function getActivityList() {
 
-    $.mobile.showPageLoadingMsg("a", "Loading activity...");
+    $.mobile.showPageLoadingMsg();
     id = localStorage.getItem("mpId");
     moreUrlPrefix = "http://www.theyworkforyou.com";
     url = 'http://www.theyworkforyou.com/api/getHansard?key=GAbXxUAuN3ggAwJjTnEEje9K&person=' + id + '&num=10&order=d';
