@@ -277,3 +277,8 @@ div.offlineMessage {
 .message h3{
 		 margin: 0 0 5px 0;													 
 }
+
+.ui-icon-loading {
+    background: url(graphics/loading.gif);
+    background-size: 46px 46px;
+}
