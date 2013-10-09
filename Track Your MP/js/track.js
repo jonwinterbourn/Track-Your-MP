@@ -49,9 +49,9 @@ function onDeviceReady() {
 
 
 function noMP() {
-        $("h1#nomp").show();
+        $("h2#nomp").show();
         $("div#nompHelp").show();
-        $("h1#mpName").hide();
+        $("h2#mpName").hide();
         $("div.mpDetails").hide();
         $("li#mpActivity").hide();
         $("li#mpNews").hide();
@@ -59,9 +59,9 @@ function noMP() {
 }
 
 function okMP() {
-    $("h1#nomp").hide();
+    $("h2#nomp").hide();
     $("div#nompHelp").hide();
-    $("h1#mpName").show();
+    $("h2#mpName").show();
     $("div.mpDetails").show();
     $("li#mpActivity").show();
     $("li#mpNews").show();
@@ -71,9 +71,9 @@ function okMP() {
     }
     
     //set name & details
-    $("h1#mpName").text(localStorage.getItem("mpName"));
-    $("div#mpConstituency").text("Constituency: " + localStorage.getItem("mpConstituency"));
-    $("div#mpParty").text("Party: " + localStorage.getItem("mpParty"));
+    $("h2#mpName").text(localStorage.getItem("mpName"));
+    $("div#mpConstituency").html("<span class='mp-text-label'>Constituency</span>: " + localStorage.getItem("mpConstituency"));
+    $("div#mpParty").html("<span class='mp-text-label'>Party</span>: " + localStorage.getItem("mpParty"));
     $("div#enteredHouse").text("Entered House: " + localStorage.getItem("enteredHouse"));
     
     portrait = $("#mpPortrait");
@@ -173,18 +173,18 @@ localStorageApp.prototype = {
         setTwitterName(valueInputId); 
         
         //set content on home page
-        $("h1#mpName").text(valueInputName);
-        $("div#mpConstituency").text("Constituency: " + valueInputConst);
-        $("div#mpParty").text("Party: " + valueInputParty);
+        $("h2#mpName").text(valueInputName);
+        $("div#mpConstituency").html("<span class='mp-text-label'>Constituency</span>: " + valueInputConst);
+        $("div#mpParty").html("<span class='mp-text-label'>Party</span>: " + valueInputParty);
         //$("div#enteredHouse").text("Entered House: " + localStorage.getItem("enteredHouse"));
         portrait = $("#mpPortrait");
         mpImg = document.createElement("IMG");
         mpImg.setAttribute("src", fullImgUrl);
         portrait.html(mpImg);
         
-        $("h1#nomp").hide();
+        $("h2#nomp").hide();
         $("div#nompHelp").hide();
-        $("h1#mpName").show();
+        $("h2#mpName").show();
         $("div.mpDetails").show();
         $("li#mpActivity").show();
         $("li#mpNews").show();

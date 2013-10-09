@@ -23,7 +23,7 @@
                     <p>This app depends on network availability. Please check network connection and try again.</p>
             </div>
             <div data-role="content">
-                <h1 id="nomp">No MP Selected</h1>
+                <h2 id="nomp">No MP Selected</h2>
                 
                 <div id="nompHelp" data-role="collapsible" data-inset="false" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d" data-iconpos="right">
                     <h3>Help</h3>
@@ -34,11 +34,19 @@
                         <li>Click 'Select MP'</li>
                     </ol>
                 </div>
-                <h1 id="mpName">MP Name</h1>
+                
                 <div class="mpDetails">
                     <div id="mpPortrait"></div>
-                    <div id="mpParty"></div>
-                    <div id="mpConstituency"></div>
+                    <div class="mp-text">    
+                        <h2 id="mpName">MP Name</h2>
+                        <div id="mpParty"></div>
+                        <div id="mpConstituency"></div>
+                        <!--<img src="pics/<%= firstName %>_<%= lastName %>100.jpg" class="employee-pic"/>
+                        <!--<div class="employee-details">
+                        <h3><%= firstName %> <%= lastName %></h3>
+                        <p><%= title %></p>
+                        -->
+                    </div>
                 </div>
             </div>
             <div class="nav">
@@ -52,9 +60,11 @@
                     
                 </ul>
             </div>
+            <!--
             <div data-role="footer" data-position="fixed" data-id="oneFooter">
                 <span class="footerText">Tuck Software</span>
             </div>
+            -->
         </div>
         
         <div data-role="page" id="activityListPage" data-add-back-btn="true">
@@ -67,7 +77,7 @@
                 </ul>
             </div>
             <div data-role="footer" data-position="fixed" data-id="oneFooter">
-                <span class="footerText">Tuck Software</span>
+                <span class="footerText">Track your MP</span>
             </div>
         </div>
         
@@ -81,7 +91,7 @@
                 </ul> 
             </div>
             <div data-role="footer" data-position="fixed" data-id="oneFooter">
-                <span class="footerText">Tuck Software</span>
+                <span class="footerText">Track your MP</span>
             </div>
         </div>
 
@@ -93,7 +103,7 @@
                 <a href="#home" id="clearStorage" data-role="button" data-icon="delete" data-inline="true">Clear currently selected MP</a>
             </div>
             <div data-role="footer" data-position="fixed" data-id="oneFooter">
-                <span class="footerText">Tuck Software</span>
+                <span class="footerText">Track your MP</span>
             </div>
         </div>
         
@@ -106,7 +116,7 @@
                 <p>The <strong>Track your MP</strong> app helps you identify the MP of an area and keep track of their activity 
                    in the House of Commons, in the politics section of the news and on Twitter.</p>
                 <hr/>
-                <p><strong>Track your MP</strong> was created by <strong><a rel="external" href="http://tucksoftware.co.uk">Tuck Software</a></strong>, using the following software:</p>
+                <p><strong>Track your MP</strong> was created by <strong><a rel="external" href="http://tucksoftware.co.uk">Tuck Software</a></strong>, as something of a prototype, using the following software:</p>
                 <ul>
                     <li>Icenium, based on Cordova</li>
                     <li>JQuery and JQuery Mobile</li>
@@ -114,17 +124,17 @@
                 </ul>
                 <p>And the following data sources:</p>
                 <ul>
-                    <li>They Work for You API</li>
+                    <li><a rel="external" href="http://www.theyworkforyou.com/api/">They Work for You API</a></li>
                     <li><a rel="external" href="http://explorer.content.guardianapis.com/">Guardian Open Platform: Content API</a></li>
                     <li>Twitter API</li>
                     <li>Google Map API</li>
 
                 </ul>
                 <hr/>
-                <p>Should you find any errors, discover innaccurate information or just have a question or feedback please email us at <a href="mailto:jonwinterbourn@tucksoftware.co.uk">jonwinterbourn@tucksoftware.co.uk</a> so that we can fix it/respond.</p>                
+                <p>Should you find any errors, discover innaccurate information or just have a question or feedback please email us at <a href="mailto:contact@tucksoftware.co.uk">contact@tucksoftware.co.uk</a> so that we can fix it/respond.</p>                
             </div>
             <div data-role="footer" data-position="fixed" data-id="oneFooter">
-                <span class="footerText">Tuck Software</span>
+                <span class="footerText">Track your MP</span>
             </div>
         </div>
         
@@ -138,7 +148,7 @@
                 </ul> 
             </div>
             <div data-role="footer" data-position="fixed" data-id="oneFooter">
-                <span class="footerText">Tuck Software</span>
+                <span class="footerText">Track your MP</span>
             </div>
         </div>
         
@@ -192,7 +202,7 @@
                 
             </div>
             <div data-role="footer" data-position="fixed" data-id="oneFooter">
-                <span class="footerText">Tuck Software</span>
+                <span class="footerText">Track your MP</span>
             </div>
         </div>
     </body>

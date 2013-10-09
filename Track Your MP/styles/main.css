@@ -21,13 +21,13 @@ body
     text-align:center;
 }
 
-h1#nomp {
+h2#nomp {
     display:none;
 }
 
-h1#mpName {
+h2#mpName {
     /*margin-bottom: 0em;*/
-    margin-bottom: 0.3em;
+    margin-bottom: 0.2em;
     margin-top: 0.3px;
 }
 
@@ -99,15 +99,20 @@ div.loadMore {
     margin-top:15px;
 }
 
-div.mpDetails div {
-    width:70%;
-    float:right;
+div.mpDetails>div {
+    /*width:70%;
+    float:right;*/
 }
 
 
 div#mpPortrait {
     float:left;
-    width:25%;
+    /*width:25%;*/
+}
+
+div#mpPortrait img {
+    padding-bottom: 16px;
+    padding-right: 10px;
 }
 
 li.tweet_text div.ui-btn-inner div.ui-btn-text a
@@ -149,7 +154,7 @@ activityListPage
 #home div.ui-content {
     
     background-color: #f9f9f9;
-    padding: 15px 15px 0 15px;
+    padding: 10px 15px 0 15px;
 }
 
 /* green theme */
@@ -282,3 +287,20 @@ div.offlineMessage {
     background: url(graphics/loading.gif);
     background-size: 46px 46px;
 }
+div.mp-text {
+    margin-bottom: 10px;
+}
+span.mp-text-label {
+/*    
+    background-color: #999;
+    font-weight: normal;
+    color: #fff;
+    padding: 2px 3px;
+  */  
+}
+
+div#mpParty,
+div#mpConstituency {
+    /*margin-bottom: 8px;*/
+}
+
