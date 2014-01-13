@@ -19,6 +19,7 @@
 					<string>Icon-Small@2x.png</string>
 					<string>Default.png</string>
 					<string>Default@2x.png</string>
+					<string>Default-568h@2x.png</string>
 					<string>icon-72.png</string>
 					<string>icon-72@2x.png</string>
 					<string>Icon-Small-50.png</string>
@@ -27,7 +28,12 @@
 					<string>Default-Landscape@2x.png</string>
 					<string>Default-Portrait.png</string>
 					<string>Default-Portrait@2x.png</string>
-
+					<string>icon-40.png</string>
+					<string>icon-40@2x.png</string>
+					<string>icon-60.png</string>
+					<string>icon-60@2x.png</string>
+					<string>icon-76.png</string>
+					<string>icon-76@2x.png</string>
 				</array>
 			<key>UIPrerenderedIcon</key>
 			<true/>
