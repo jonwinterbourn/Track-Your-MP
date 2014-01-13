@@ -12,7 +12,7 @@
     <iOSStatusBarStyle>Default</iOSStatusBarStyle>
     <AndroidHardwareAcceleration>false</AndroidHardwareAcceleration>
     <BundleVersion>1.15</BundleVersion>
-    <iOSDisplayName />
+    <iOSDisplayName>Track Your MP</iOSDisplayName>
     <iOSDeviceFamily>1;2</iOSDeviceFamily>
     <iOSBackgroundMode />
     <AndroidVersionCode>5</AndroidVersionCode>
